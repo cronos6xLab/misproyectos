@@ -2,15 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--
+    ═══════════════════════════════════════════════════════════════
+    📱 VIEWPORT — Bloqueo de zoom en iOS
+    ─────────────────────────────────────────────────────────────
+    • maximum-scale=1     → impide pinch-zoom en Safari iOS
+    • user-scalable=no    → impide doble-tap zoom en iOS antiguo
+    • viewport-fit=cover  → extiende el layout bajo el notch/home indicator
+    ═══════════════════════════════════════════════════════════════
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>MIS REPOS Y APPS // EMERGENCY BROADCAST</title>
 
   <!--
     ═══════════════════════════════════════════════════════════════
     🔤 FUENTES (sustitutos de Spektra y Helvetica Neue LT)
     ═══════════════════════════════════════════════════════════════
-      - Display → Spektra 400 (substituto: Anton, condensed extremo)
-      - Body    → Helvetica Neue LT 400/800 (substituto: Inter)
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,15 +41,6 @@
       --font-spektra: 'Anton', 'Bebas Neue', 'League Gothic', Impact, sans-serif;
       --font-body: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
-      /* Type Scale */
-      --text-caption: 14px;
-      --text-body: 16px;
-      --text-subheading: 28px;
-      --text-heading-sm: 30px;
-      --text-heading: 40px;
-      --text-heading-lg: 100px;
-      --text-display: 202px;
-
       /* Spacing */
       --spacing-8: 8px;
       --spacing-12: 12px;
@@ -52,7 +53,7 @@
       --spacing-80: 80px;
       --spacing-100: 100px;
 
-      /* Radii — extremos, nunca 4-8px */
+      /* Radii */
       --radius-input: 10px;
       --radius-button-sm: 48px;
       --radius-button-md: 80px;
@@ -60,37 +61,60 @@
       --radius-card: 2520px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
     /* ═══════════════════════════════════════════════════════════
-       ⬛ CANVAS — Void Black #000000, sin excepciones
+       🔧 RESET + ANTI-ZOOM + ANTI-OVERFLOW
        ═══════════════════════════════════════════════════════════ */
-    html, body {
-      background: var(--color-void-black);
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      /* iOS: evita el highlight azul al tocar enlaces */
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      /* iOS: impide que Safari escale el texto automáticamente */
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      /* iOS: evita el "rubber band" horizontal */
+      overflow-x: hidden;
+      background: #000000;
+      /* Suaviza el scroll en iOS */
+      -webkit-overflow-scrolling: touch;
     }
 
     body {
       font-family: var(--font-body);
       color: var(--color-bone-cream);
-      min-height: 100vh;
-      overflow-x: hidden;
+      background: var(--color-void-black);
       line-height: 1.27;
+      overflow-x: hidden;
+      /* iOS: ocupa toda la altura incluyendo safe areas */
+      min-height: 100vh;
+      min-height: 100dvh;
       position: relative;
+      /* iOS: evita zoom por doble tap en elementos interactivos */
+      touch-action: manipulation;
+    }
+
+    /* iOS: evita zoom al hacer focus en enlaces/botones */
+    a, button {
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     /* ═══════════════════════════════════════════════════════════
-       📡 RADAR CONCENTRIC FIELD — fondo decorativo del hero
-       4 anillos #ff4034 concéntricos, alternando sólido y dashed.
+       📡 RADAR — fondo decorativo, siempre detrás y sin scroll
+       Usa aspect-ratio para escalar perfectamente en cualquier pantalla
        ═══════════════════════════════════════════════════════════ */
     .radar {
       position: absolute;
       top: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 1400px;
-      height: 1400px;
-      max-width: 200vw;
-      max-height: 200vw;
+      width: min(1400px, 200vw);
+      aspect-ratio: 1 / 1;
       pointer-events: none;
       z-index: 0;
       opacity: 0.9;
@@ -98,7 +122,8 @@
 
     .radar::before,
     .radar::after,
-    .radar span {
+    .radar .ring-3,
+    .radar .ring-4 {
       content: '';
       position: absolute;
       top: 50%;
@@ -109,53 +134,50 @@
 
     .radar::before {
       width: 30%;
-      height: 30%;
+      aspect-ratio: 1;
       border: 2px solid var(--color-alarm-red);
     }
 
     .radar::after {
       width: 55%;
-      height: 55%;
+      aspect-ratio: 1;
       border: 2px dashed var(--color-alarm-red);
       opacity: 0.7;
     }
 
     .radar .ring-3 {
       width: 80%;
-      height: 80%;
+      aspect-ratio: 1;
       border: 1px solid var(--color-alarm-red);
       opacity: 0.45;
     }
 
     .radar .ring-4 {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 1;
       border: 2px dashed var(--color-alarm-red);
       opacity: 0.25;
     }
 
     /* ═══════════════════════════════════════════════════════════
-       ☢️ HAZARD ICON MARKERS — cuadrados rojos scattered
-       Según el ref: 16-24px, símbolo blanco dentro de cuadrado rojo.
-       Posicionados en radios orbitales fijos.
+       ☢️ HAZARD ICONS — posiciones con % para adaptarse a cualquier tamaño
        ═══════════════════════════════════════════════════════════ */
     .hazard {
       position: absolute;
-      width: 24px;
-      height: 24px;
+      width: clamp(16px, 2vw, 24px);
+      height: clamp(16px, 2vw, 24px);
       background: var(--color-alarm-red);
       color: var(--color-bone-cream);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: clamp(10px, 1.2vw, 14px);
       line-height: 1;
       z-index: 1;
       font-family: var(--font-body);
       font-weight: 800;
     }
 
-    /* Posiciones orbitales fijas alrededor del radar */
     .hazard--1 { top: 18%;  left: 22%; }
     .hazard--2 { top: 32%;  right: 20%; }
     .hazard--3 { top: 62%;  left: 14%; }
@@ -163,26 +185,36 @@
     .hazard--5 { top: 12%;  right: 32%; }
     .hazard--6 { bottom: 8%; left: 42%; }
 
+    /* Ocultar hazard icons en pantallas muy pequeñas para evitar ruido */
+    @media (max-width: 420px) {
+      .hazard--5,
+      .hazard--6 {
+        display: none;
+      }
+    }
+
     /* ═══════════════════════════════════════════════════════════
-       📰 HERO — Apocalypse Display Headline
-       Spektra 202px, line-height 0.82, bone cream, centered.
+       📰 HERO — Display headline con clamp fluido
        ═══════════════════════════════════════════════════════════ */
     .hero {
       position: relative;
-      min-height: 100vh;
+      min-height: 100svh;   /* small viewport height, evita saltos en iOS */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: var(--spacing-80) var(--spacing-30);
+      padding:
+        calc(var(--spacing-80) + env(safe-area-inset-top, 0px))
+        calc(var(--spacing-30) + env(safe-area-inset-right, 0px))
+        calc(var(--spacing-80) + env(safe-area-inset-bottom, 0px))
+        calc(var(--spacing-30) + env(safe-area-inset-left, 0px));
       text-align: center;
       z-index: 2;
     }
 
-    /* Brand wordmark — siteline pequeño sobre el display */
     .wordmark {
       font-family: var(--font-spektra);
-      font-size: var(--text-heading);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       line-height: 1;
       color: var(--color-bone-cream);
       letter-spacing: 0.02em;
@@ -191,50 +223,57 @@
       font-weight: 400;
     }
 
-    /* Display headline — massive, condensed, touching letters */
+    /* Display headline — fluye entre 3rem (móvil pequeño) y 202px (desktop XL) */
     .hero h1 {
       font-family: var(--font-spektra);
       font-weight: 400;
-      font-size: clamp(4rem, 18vw, 202px);
+      font-size: clamp(3rem, 16vw, 202px);
       line-height: 0.82;
       letter-spacing: 0.01em;
       color: var(--color-bone-cream);
       text-transform: uppercase;
       max-width: 14ch;
-      /* Los caracteres se "tocan" — la firma visual del ref */
+      /* Fuerza el salto de línea visual para que no desborde */
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
-    /* Acento rojo — solo para anotación, no decoración */
     .hero h1 .alert {
       color: var(--color-alarm-red);
     }
 
-    /* Subheadline editorial */
     .hero .subhead {
       font-family: var(--font-body);
       font-weight: 400;
-      font-size: var(--text-body);
+      font-size: clamp(0.9rem, 2vw, 1rem);
       line-height: 1.27;
       color: var(--color-bone-cream);
       max-width: 680px;
+      width: 100%;
       margin-top: var(--spacing-40);
+      padding: 0 var(--spacing-15);
       letter-spacing: 0.01em;
     }
 
     /* ═══════════════════════════════════════════════════════════
-       📋 SECCIÓN PRINCIPAL — single column, 680px max-width
+       📋 MANIFESTO — columna centrada, max 680px
        ═══════════════════════════════════════════════════════════ */
     .manifesto {
       position: relative;
       max-width: 680px;
+      width: 100%;
       margin: 0 auto;
-      padding: 0 var(--spacing-30) var(--spacing-80);
+      padding:
+        0
+        calc(var(--spacing-30) + env(safe-area-inset-right, 0px))
+        var(--spacing-80)
+        calc(var(--spacing-30) + env(safe-area-inset-left, 0px));
       z-index: 2;
     }
 
     .manifesto .kicker {
       font-family: var(--font-spektra);
-      font-size: var(--text-heading-sm);
+      font-size: clamp(1.25rem, 3vw, 1.875rem);
       line-height: 1;
       color: var(--color-alarm-red);
       text-transform: uppercase;
@@ -244,13 +283,12 @@
 
     .manifesto p {
       font-family: var(--font-body);
-      font-size: var(--text-body);
+      font-size: clamp(0.95rem, 1.5vw, 1rem);
       line-height: 1.27;
       color: var(--color-bone-cream);
       margin-bottom: var(--spacing-30);
     }
 
-    /* Editorial link estándar */
     .manifesto p a {
       color: var(--color-bone-cream);
       text-decoration: underline;
@@ -258,7 +296,6 @@
       text-underline-offset: 3px;
     }
 
-    /* Strikethrough editorial — firma del ref */
     .manifesto p .correction {
       color: var(--color-alarm-red);
       text-decoration: line-through;
@@ -266,8 +303,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🗂️ LISTA DE APPS — formato editorial, sin cards SaaS
-       Cada app es un bloque con número romano + link pill
+       🗂️ LISTA DE APPS
        ═══════════════════════════════════════════════════════════ */
     .apps-list {
       list-style: none;
@@ -287,46 +323,52 @@
       border-bottom: 1px solid var(--color-bone-cream);
     }
 
-    /* Número romano — actúa como icono hazard textual */
     .app-item .index {
       font-family: var(--font-spektra);
-      font-size: var(--text-heading-sm);
+      font-size: clamp(1.5rem, 3vw, 1.875rem);
       line-height: 1;
       color: var(--color-alarm-red);
-      min-width: 60px;
+      min-width: clamp(40px, 6vw, 60px);
+    }
+
+    .app-item .meta {
+      min-width: 0; /* evita overflow en grid */
     }
 
     .app-item .meta h3 {
       font-family: var(--font-spektra);
       font-weight: 400;
-      font-size: var(--text-subheading);
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
       line-height: 1.05;
       color: var(--color-bone-cream);
       text-transform: uppercase;
       letter-spacing: 0.02em;
       margin-bottom: 4px;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
     .app-item .meta p {
       font-family: var(--font-body);
-      font-size: var(--text-caption);
+      font-size: clamp(0.8rem, 1.4vw, 0.875rem);
       line-height: 1.27;
       color: var(--color-ash-taupe);
       margin: 0;
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🔘 PILL BUTTONS — Bone Cream fill, hard shadow #c3bdb3
-       Border-radius extremo (120px lg / 80px md / 48px sm)
-       Box-shadow 0 4px 0 #c3bdb3 — la única elevación del sistema
+       🔘 PILL BUTTONS — Mantienen proporción en toda pantalla
+       font-size mínimo 16px en móvil para iOS (evita auto-zoom)
        ═══════════════════════════════════════════════════════════ */
     .btn-pill {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       font-family: var(--font-body);
       font-weight: 800;
-      font-size: var(--text-body);
+      /* iOS: 16px mínimo, así no hace zoom si algún día es input */
+      font-size: 16px;
       background: var(--color-bone-cream);
       color: var(--color-void-black);
       padding: 15px 30px;
@@ -340,7 +382,6 @@
       white-space: nowrap;
     }
 
-    /* Hover: se hunde en el "papel" — 100-150ms máx */
     .btn-pill:hover {
       transform: translateY(2px);
       box-shadow: 0 2px 0 var(--color-ash-taupe);
@@ -351,33 +392,28 @@
       box-shadow: 0 0 0 var(--color-ash-taupe);
     }
 
-    /* Variante grande para CTA principal */
     .btn-pill--lg {
       padding: 20px 60px;
       border-radius: var(--radius-button-lg);
-      font-size: var(--text-body);
     }
 
-    /* Variante pequeña para footer */
     .btn-pill--sm {
-      padding: 7px 15px;
+      padding: 10px 20px;
       border-radius: var(--radius-button-sm);
-      font-size: var(--text-caption);
+      font-size: 14px; /* es un botón, no input — seguro */
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🦶 FLAME FOOTER — siluetas rojas planas al pie
-       100-160px, bleeden off viewport, sin gradiente.
+       🦶 FLAME FOOTER — escala fluida, sin overflow
        ═══════════════════════════════════════════════════════════ */
     .flames {
       position: relative;
       width: 100%;
-      height: 140px;
+      height: clamp(70px, 12vw, 140px);
       margin-top: var(--spacing-100);
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      gap: 0;
       overflow: hidden;
       z-index: 2;
     }
@@ -385,10 +421,11 @@
     .flame {
       width: 0;
       height: 0;
-      border-left: 22px solid transparent;
-      border-right: 22px solid transparent;
-      border-bottom: 90px solid var(--color-alarm-red);
-      margin: 0 -4px;
+      flex-shrink: 0;
+      border-left: clamp(12px, 1.8vw, 22px) solid transparent;
+      border-right: clamp(12px, 1.8vw, 22px) solid transparent;
+      border-bottom: clamp(50px, 9vw, 90px) solid var(--color-alarm-red);
+      margin: 0 -3px;
       position: relative;
     }
 
@@ -400,23 +437,27 @@
       transform: translateX(-50%);
       width: 0;
       height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 42px solid var(--color-void-black);
+      border-left: clamp(5px, 0.8vw, 10px) solid transparent;
+      border-right: clamp(5px, 0.8vw, 10px) solid transparent;
+      border-bottom: clamp(24px, 4.2vw, 42px) solid var(--color-void-black);
     }
 
-    .flame--sm { border-bottom-width: 60px; }
-    .flame--lg { border-bottom-width: 120px; }
-    .flame--xl { border-bottom-width: 140px; }
+    .flame--sm { border-bottom-width: clamp(35px, 6vw, 60px); }
+    .flame--lg { border-bottom-width: clamp(70px, 12vw, 120px); }
+    .flame--xl { border-bottom-width: clamp(80px, 14vw, 140px); }
 
     /* ═══════════════════════════════════════════════════════════
        📌 FOOTER MARK
        ═══════════════════════════════════════════════════════════ */
     .footer-mark {
       text-align: center;
-      padding: var(--spacing-40) var(--spacing-20) var(--spacing-60);
+      padding:
+        var(--spacing-40)
+        calc(var(--spacing-20) + env(safe-area-inset-right, 0px))
+        calc(var(--spacing-60) + env(safe-area-inset-bottom, 0px))
+        calc(var(--spacing-20) + env(safe-area-inset-left, 0px));
       font-family: var(--font-body);
-      font-size: var(--text-caption);
+      font-size: clamp(0.7rem, 1.2vw, 0.875rem);
       color: var(--color-ash-taupe);
       letter-spacing: 0.02em;
       position: relative;
@@ -433,27 +474,113 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       📱 RESPONSIVE
+       📱 BREAKPOINT: TABLET (≤ 900px)
+       ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .hero {
+        padding-top: calc(var(--spacing-60) + env(safe-area-inset-top, 0px));
+        padding-bottom: calc(var(--spacing-60) + env(safe-area-inset-bottom, 0px));
+      }
+      .manifesto {
+        padding-bottom: var(--spacing-60);
+      }
+      .flames {
+        margin-top: var(--spacing-60);
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       📱 BREAKPOINT: MÓVIL (≤ 640px)
        ═══════════════════════════════════════════════════════════ */
     @media (max-width: 640px) {
-      .hero { padding: var(--spacing-60) var(--spacing-20); min-height: auto; }
-      .wordmark { font-size: var(--text-subheading); margin-bottom: var(--spacing-20); }
-      .hero .subhead { margin-top: var(--spacing-30); }
-      .manifesto { padding: 0 var(--spacing-20) var(--spacing-60); }
+      .hero {
+        min-height: auto;
+        padding-top: calc(var(--spacing-60) + env(safe-area-inset-top, 0px));
+        padding-bottom: var(--spacing-40);
+      }
+
+      .wordmark {
+        margin-bottom: var(--spacing-20);
+      }
+
+      .hero .subhead {
+        margin-top: var(--spacing-30);
+      }
+
+      /* App item pasa a 2 columnas: número+contenido, botón full-width debajo */
       .app-item {
         grid-template-columns: auto 1fr;
         gap: var(--spacing-15);
+        padding: var(--spacing-25) 0;
       }
+
       .app-item .btn-pill {
         grid-column: 1 / -1;
-        justify-content: center;
+        width: 100%;
+        padding: 14px 20px;
       }
-      .hazard { width: 18px; height: 18px; font-size: 10px; }
-      .flame { border-left-width: 16px; border-right-width: 16px; }
-      .flame::after {
-        border-left-width: 7px;
-        border-right-width: 7px;
-        border-bottom-width: 30px;
+
+      .apps-list {
+        margin-top: var(--spacing-40);
+      }
+
+      .flame {
+        margin: 0 -2px;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       📱 BREAKPOINT: MÓVIL PEQUEÑO (≤ 400px)
+       ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 400px) {
+      .hero h1 {
+        font-size: clamp(2.5rem, 14vw, 4rem);
+      }
+
+      .app-item .index {
+        min-width: 32px;
+      }
+
+      .app-item .meta h3 {
+        font-size: clamp(1.05rem, 4.5vw, 1.3rem);
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🖥️ PANTALLAS ULTRA-WIDE (≥ 1600px)
+       Limita el radar y evita que se vea vacío
+       ═══════════════════════════════════════════════════════════ */
+    @media (min-width: 1600px) {
+      .hero h1 {
+        font-size: 202px;
+      }
+      .radar {
+        width: 1600px;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🔄 ORIENTACIÓN HORIZONTAL EN MÓVIL
+       Reduce altura del hero para no forzar scroll raro
+       ═══════════════════════════════════════════════════════════ */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .hero {
+        min-height: auto;
+        padding-top: var(--spacing-40);
+        padding-bottom: var(--spacing-40);
+      }
+      .radar {
+        opacity: 0.4;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ♿ ACCESIBILIDAD — respeta "reduce motion"
+       ═══════════════════════════════════════════════════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
       }
     }
   </style>
@@ -461,17 +588,15 @@
 <body>
 
   <!-- ═══════════════════════════════════════════════════════════
-       📡 HERO — Radar + hazard icons + apocalypse headline
+       📡 HERO
        ═══════════════════════════════════════════════════════════ -->
   <section class="hero">
 
-    <!-- Radar concentric field (fondo decorativo) -->
     <div class="radar" aria-hidden="true">
       <span class="ring-3"></span>
       <span class="ring-4"></span>
     </div>
 
-    <!-- Hazard icon markers scattered a radios orbitales fijos -->
     <div class="hazard hazard--1" aria-hidden="true">☢</div>
     <div class="hazard hazard--2" aria-hidden="true">⚠</div>
     <div class="hazard hazard--3" aria-hidden="true">☣</div>
@@ -479,17 +604,14 @@
     <div class="hazard hazard--5" aria-hidden="true">!</div>
     <div class="hazard hazard--6" aria-hidden="true">☢</div>
 
-    <!-- Brand wordmark siteline -->
     <div class="wordmark">// Mis Proyectos //</div>
 
-    <!-- Display headline — massive, condensed, touching -->
     <h1>
       REPOS<br>
       <span class="alert">&amp;</span> APPS<br>
       EN VIVO
     </h1>
 
-    <!-- Subhead editorial -->
     <p class="subhead">
       Acceso directo a cada proyecto desplegado. Sin intermediarios. Sin dashboards.
       Solo el enlace y tú.
@@ -498,7 +620,7 @@
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════
-       📋 MANIFESTO — Prose editorial + lista de apps
+       📋 MANIFESTO + LISTA DE APPS
        ─────────────────────────────────────────────────────────
        📌 CÓMO AÑADIR UNA NUEVA APP
        Copia y pega este bloque <li> dentro del <ul class="apps-list">:
@@ -515,8 +637,7 @@
          </a>
        </li>
 
-       📌 NUMERACIÓN ROMANA sugerida: I, II, III, IV, V, VI, VII, VIII, IX, X
-       📌 Si necesitas más de 10, puedes usar I, II... o pasar a arábigos.
+       📌 NUMERACIÓN ROMANA: I, II, III, IV, V, VI, VII, VIII, IX, X
        ═══════════════════════════════════════════════════════════ -->
   <section class="manifesto">
 
@@ -533,10 +654,9 @@
       Actualiza esta página cada vez que publiques algo nuevo.
     </p>
 
-    <!-- Lista editorial de apps -->
     <ul class="apps-list">
 
-      <!-- ─────────── APP I: Juego Impostor ─────────── -->
+      <!-- ─────────── APP I ─────────── -->
       <li class="app-item">
         <span class="index">I</span>
         <div class="meta">
@@ -550,7 +670,7 @@
         </a>
       </li>
 
-      <!-- ─────────── APP II: Inventario Perfume ─────────── -->
+      <!-- ─────────── APP II ─────────── -->
       <li class="app-item">
         <span class="index">II</span>
         <div class="meta">
@@ -564,7 +684,7 @@
         </a>
       </li>
 
-      <!-- ─────────── APP III: QR Generator ─────────── -->
+      <!-- ─────────── APP III ─────────── -->
       <li class="app-item">
         <span class="index">III</span>
         <div class="meta">
@@ -598,7 +718,7 @@
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════
-       🦶 FLAME FOOTER — siluetas planas rojas
+       🦶 FLAME FOOTER
        ═══════════════════════════════════════════════════════════ -->
   <div class="flames" aria-hidden="true">
     <div class="flame flame--sm"></div>
