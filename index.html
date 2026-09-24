@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Repos y Apps</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      color: #fff;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+      background: linear-gradient(90deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    p.subtitle {
+      color: #a0a0c0;
+      margin-bottom: 3rem;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(167,139,250,0.5), rgba(96,165,250,0.5), rgba(255,255,255,0.05));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(96, 165, 250, 0.25);
+      border-color: rgba(96, 165, 250, 0.4);
+    }
+
+    .card:active {
+      transform: translateY(-2px) scale(0.98);
+    }
+
+    .icon {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: #a0a0c0;
+      margin-bottom: 1.2rem;
+      line-height: 1.4;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.8rem;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #7c3aed, #3b82f6);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35);
+    }
+
+    .card:hover .btn {
+      opacity: 0.9;
+      transform: scale(1.03);
+    }
+
+    .footer {
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      color: #6b6b8a;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.7rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🚀 Mis Repos y Apps</h1>
+  <p class="subtitle">Accede rápidamente a todos tus proyectos desplegados</p>
+
+  <div class="grid">
+
+    <!-- App 1: Juego Impostor -->
+    <a href="https://juegaimpostor.vercel.app/" target="_blank" rel="noopener noreferrer" class="card">
+      <span class="icon">🕵️</span>
+      <h2>Juego Impostor</h2>
+      <p>Descubre al impostor en este juego de deducción social.</p>
+      <span class="btn">Abrir App</span>
+    </a>
+
+    <!-- App 2: Inventario Perfume -->
+    <a href="https://inventarioperfume.vercel.app/" target="_blank" rel="noopener noreferrer" class="card">
+      <span class="icon">🌸</span>
+      <h2>Inventario Perfume</h2>
+      <p>Gestiona tu colección de perfumes de forma sencilla.</p>
+      <span class="btn">Abrir App</span>
+    </a>
+
+    <!-- App 3: QR Generator -->
+    <a href="https://qr-generator-three-inky.vercel.app/" target="_blank" rel="noopener noreferrer" class="card">
+      <span class="icon">🔳</span>
+      <h2>QR Generator</h2>
+      <p>Crea códigos QR personalizados en segundos.</p>
+      <span class="btn">Abrir App</span>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    Hecho con 💜 · Mis proyectos en Vercel
+  </div>
+
+</body>
+</html>
