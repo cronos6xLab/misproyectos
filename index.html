@@ -3,174 +3,627 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Repos y Apps</title>
+  <title>MIS REPOS Y APPS // EMERGENCY BROADCAST</title>
+
+  <!--
+    ═══════════════════════════════════════════════════════════════
+    🔤 FUENTES (sustitutos de Spektra y Helvetica Neue LT)
+    ═══════════════════════════════════════════════════════════════
+      - Display → Spektra 400 (substituto: Anton, condensed extremo)
+      - Body    → Helvetica Neue LT 400/800 (substituto: Inter)
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;800&display=swap" rel="stylesheet">
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* ═══════════════════════════════════════════════════════════
+       🎯 DESIGN TOKENS — Cards Against Humanity Style Reference
+       ═══════════════════════════════════════════════════════════ */
+    :root {
+      /* Colors — 4 tokens, ni uno más */
+      --color-void-black: #000000;
+      --color-bone-cream: #ebe4d8;
+      --color-ash-taupe: #c3bdb3;
+      --color-alarm-red: #ff4034;
+
+      /* Typography */
+      --font-spektra: 'Anton', 'Bebas Neue', 'League Gothic', Impact, sans-serif;
+      --font-body: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+      /* Type Scale */
+      --text-caption: 14px;
+      --text-body: 16px;
+      --text-subheading: 28px;
+      --text-heading-sm: 30px;
+      --text-heading: 40px;
+      --text-heading-lg: 100px;
+      --text-display: 202px;
+
+      /* Spacing */
+      --spacing-8: 8px;
+      --spacing-12: 12px;
+      --spacing-15: 15px;
+      --spacing-20: 20px;
+      --spacing-25: 25px;
+      --spacing-30: 30px;
+      --spacing-40: 40px;
+      --spacing-60: 60px;
+      --spacing-80: 80px;
+      --spacing-100: 100px;
+
+      /* Radii — extremos, nunca 4-8px */
+      --radius-input: 10px;
+      --radius-button-sm: 48px;
+      --radius-button-md: 80px;
+      --radius-button-lg: 120px;
+      --radius-card: 2520px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ═══════════════════════════════════════════════════════════
+       ⬛ CANVAS — Void Black #000000, sin excepciones
+       ═══════════════════════════════════════════════════════════ */
+    html, body {
+      background: var(--color-void-black);
     }
 
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      font-family: var(--font-body);
+      color: var(--color-bone-cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.27;
+      position: relative;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       📡 RADAR CONCENTRIC FIELD — fondo decorativo del hero
+       4 anillos #ff4034 concéntricos, alternando sólido y dashed.
+       ═══════════════════════════════════════════════════════════ */
+    .radar {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1400px;
+      height: 1400px;
+      max-width: 200vw;
+      max-height: 200vw;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    .radar::before,
+    .radar::after,
+    .radar span {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+
+    .radar::before {
+      width: 30%;
+      height: 30%;
+      border: 2px solid var(--color-alarm-red);
+    }
+
+    .radar::after {
+      width: 55%;
+      height: 55%;
+      border: 2px dashed var(--color-alarm-red);
+      opacity: 0.7;
+    }
+
+    .radar .ring-3 {
+      width: 80%;
+      height: 80%;
+      border: 1px solid var(--color-alarm-red);
+      opacity: 0.45;
+    }
+
+    .radar .ring-4 {
+      width: 100%;
+      height: 100%;
+      border: 2px dashed var(--color-alarm-red);
+      opacity: 0.25;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ☢️ HAZARD ICON MARKERS — cuadrados rojos scattered
+       Según el ref: 16-24px, símbolo blanco dentro de cuadrado rojo.
+       Posicionados en radios orbitales fijos.
+       ═══════════════════════════════════════════════════════════ */
+    .hazard {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: var(--color-alarm-red);
+      color: var(--color-bone-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      line-height: 1;
+      z-index: 1;
+      font-family: var(--font-body);
+      font-weight: 800;
+    }
+
+    /* Posiciones orbitales fijas alrededor del radar */
+    .hazard--1 { top: 18%;  left: 22%; }
+    .hazard--2 { top: 32%;  right: 20%; }
+    .hazard--3 { top: 62%;  left: 14%; }
+    .hazard--4 { top: 74%;  right: 16%; }
+    .hazard--5 { top: 12%;  right: 32%; }
+    .hazard--6 { bottom: 8%; left: 42%; }
+
+    /* ═══════════════════════════════════════════════════════════
+       📰 HERO — Apocalypse Display Headline
+       Spektra 202px, line-height 0.82, bone cream, centered.
+       ═══════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
-      color: #fff;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
+      padding: var(--spacing-80) var(--spacing-30);
       text-align: center;
-      background: linear-gradient(90deg, #a78bfa, #60a5fa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      z-index: 2;
     }
 
-    p.subtitle {
-      color: #a0a0c0;
-      margin-bottom: 3rem;
-      text-align: center;
-      font-size: 1rem;
+    /* Brand wordmark — siteline pequeño sobre el display */
+    .wordmark {
+      font-family: var(--font-spektra);
+      font-size: var(--text-heading);
+      line-height: 1;
+      color: var(--color-bone-cream);
+      letter-spacing: 0.02em;
+      margin-bottom: var(--spacing-40);
+      text-transform: uppercase;
+      font-weight: 400;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      width: 100%;
-      max-width: 960px;
+    /* Display headline — massive, condensed, touching letters */
+    .hero h1 {
+      font-family: var(--font-spektra);
+      font-weight: 400;
+      font-size: clamp(4rem, 18vw, 202px);
+      line-height: 0.82;
+      letter-spacing: 0.01em;
+      color: var(--color-bone-cream);
+      text-transform: uppercase;
+      max-width: 14ch;
+      /* Los caracteres se "tocan" — la firma visual del ref */
     }
 
-    .card {
+    /* Acento rojo — solo para anotación, no decoración */
+    .hero h1 .alert {
+      color: var(--color-alarm-red);
+    }
+
+    /* Subheadline editorial */
+    .hero .subhead {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: var(--text-body);
+      line-height: 1.27;
+      color: var(--color-bone-cream);
+      max-width: 680px;
+      margin-top: var(--spacing-40);
+      letter-spacing: 0.01em;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       📋 SECCIÓN PRINCIPAL — single column, 680px max-width
+       ═══════════════════════════════════════════════════════════ */
+    .manifesto {
       position: relative;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 18px;
-      padding: 2rem 1.5rem;
-      text-align: center;
-      text-decoration: none;
-      color: #fff;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-      backdrop-filter: blur(12px);
-      overflow: hidden;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-30) var(--spacing-80);
+      z-index: 2;
     }
 
-    .card::before {
+    .manifesto .kicker {
+      font-family: var(--font-spektra);
+      font-size: var(--text-heading-sm);
+      line-height: 1;
+      color: var(--color-alarm-red);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--spacing-20);
+    }
+
+    .manifesto p {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 1.27;
+      color: var(--color-bone-cream);
+      margin-bottom: var(--spacing-30);
+    }
+
+    /* Editorial link estándar */
+    .manifesto p a {
+      color: var(--color-bone-cream);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    /* Strikethrough editorial — firma del ref */
+    .manifesto p .correction {
+      color: var(--color-alarm-red);
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🗂️ LISTA DE APPS — formato editorial, sin cards SaaS
+       Cada app es un bloque con número romano + link pill
+       ═══════════════════════════════════════════════════════════ */
+    .apps-list {
+      list-style: none;
+      margin-top: var(--spacing-60);
+    }
+
+    .app-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: var(--spacing-20);
+      padding: var(--spacing-30) 0;
+      border-top: 1px solid var(--color-bone-cream);
+    }
+
+    .app-item:last-child {
+      border-bottom: 1px solid var(--color-bone-cream);
+    }
+
+    /* Número romano — actúa como icono hazard textual */
+    .app-item .index {
+      font-family: var(--font-spektra);
+      font-size: var(--text-heading-sm);
+      line-height: 1;
+      color: var(--color-alarm-red);
+      min-width: 60px;
+    }
+
+    .app-item .meta h3 {
+      font-family: var(--font-spektra);
+      font-weight: 400;
+      font-size: var(--text-subheading);
+      line-height: 1.05;
+      color: var(--color-bone-cream);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 4px;
+    }
+
+    .app-item .meta p {
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
+      line-height: 1.27;
+      color: var(--color-ash-taupe);
+      margin: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🔘 PILL BUTTONS — Bone Cream fill, hard shadow #c3bdb3
+       Border-radius extremo (120px lg / 80px md / 48px sm)
+       Box-shadow 0 4px 0 #c3bdb3 — la única elevación del sistema
+       ═══════════════════════════════════════════════════════════ */
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: var(--text-body);
+      background: var(--color-bone-cream);
+      color: var(--color-void-black);
+      padding: 15px 30px;
+      border-radius: var(--radius-button-md);
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 0 var(--color-ash-taupe);
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    /* Hover: se hunde en el "papel" — 100-150ms máx */
+    .btn-pill:hover {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 var(--color-ash-taupe);
+    }
+
+    .btn-pill:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 var(--color-ash-taupe);
+    }
+
+    /* Variante grande para CTA principal */
+    .btn-pill--lg {
+      padding: 20px 60px;
+      border-radius: var(--radius-button-lg);
+      font-size: var(--text-body);
+    }
+
+    /* Variante pequeña para footer */
+    .btn-pill--sm {
+      padding: 7px 15px;
+      border-radius: var(--radius-button-sm);
+      font-size: var(--text-caption);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🦶 FLAME FOOTER — siluetas rojas planas al pie
+       100-160px, bleeden off viewport, sin gradiente.
+       ═══════════════════════════════════════════════════════════ */
+    .flames {
+      position: relative;
+      width: 100%;
+      height: 140px;
+      margin-top: var(--spacing-100);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 0;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .flame {
+      width: 0;
+      height: 0;
+      border-left: 22px solid transparent;
+      border-right: 22px solid transparent;
+      border-bottom: 90px solid var(--color-alarm-red);
+      margin: 0 -4px;
+      position: relative;
+    }
+
+    .flame::after {
       content: '';
       position: absolute;
-      inset: 0;
-      border-radius: 18px;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(167,139,250,0.5), rgba(96,165,250,0.5), rgba(255,255,255,0.05));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 42px solid var(--color-void-black);
     }
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(96, 165, 250, 0.25);
-      border-color: rgba(96, 165, 250, 0.4);
-    }
+    .flame--sm { border-bottom-width: 60px; }
+    .flame--lg { border-bottom-width: 120px; }
+    .flame--xl { border-bottom-width: 140px; }
 
-    .card:active {
-      transform: translateY(-2px) scale(0.98);
-    }
-
-    .icon {
-      font-size: 2.8rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .card h2 {
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    .card p {
-      font-size: 0.85rem;
-      color: #a0a0c0;
-      margin-bottom: 1.2rem;
-      line-height: 1.4;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 0.65rem 1.8rem;
-      border-radius: 10px;
-      background: linear-gradient(90deg, #7c3aed, #3b82f6);
-      color: #fff;
-      font-weight: 600;
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35);
-    }
-
-    .card:hover .btn {
-      opacity: 0.9;
-      transform: scale(1.03);
-    }
-
-    .footer {
-      margin-top: 3rem;
-      font-size: 0.8rem;
-      color: #6b6b8a;
+    /* ═══════════════════════════════════════════════════════════
+       📌 FOOTER MARK
+       ═══════════════════════════════════════════════════════════ */
+    .footer-mark {
       text-align: center;
+      padding: var(--spacing-40) var(--spacing-20) var(--spacing-60);
+      font-family: var(--font-body);
+      font-size: var(--text-caption);
+      color: var(--color-ash-taupe);
+      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 2;
     }
 
-    @media (max-width: 480px) {
-      h1 { font-size: 1.7rem; }
-      .grid { grid-template-columns: 1fr; }
+    .footer-mark .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--color-alarm-red);
+      margin: 0 8px;
+      vertical-align: middle;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       📱 RESPONSIVE
+       ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 640px) {
+      .hero { padding: var(--spacing-60) var(--spacing-20); min-height: auto; }
+      .wordmark { font-size: var(--text-subheading); margin-bottom: var(--spacing-20); }
+      .hero .subhead { margin-top: var(--spacing-30); }
+      .manifesto { padding: 0 var(--spacing-20) var(--spacing-60); }
+      .app-item {
+        grid-template-columns: auto 1fr;
+        gap: var(--spacing-15);
+      }
+      .app-item .btn-pill {
+        grid-column: 1 / -1;
+        justify-content: center;
+      }
+      .hazard { width: 18px; height: 18px; font-size: 10px; }
+      .flame { border-left-width: 16px; border-right-width: 16px; }
+      .flame::after {
+        border-left-width: 7px;
+        border-right-width: 7px;
+        border-bottom-width: 30px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>🚀 Mis Repos y Apps</h1>
-  <p class="subtitle">Accede rápidamente a todos tus proyectos desplegados</p>
+  <!-- ═══════════════════════════════════════════════════════════
+       📡 HERO — Radar + hazard icons + apocalypse headline
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="hero">
 
-  <div class="grid">
+    <!-- Radar concentric field (fondo decorativo) -->
+    <div class="radar" aria-hidden="true">
+      <span class="ring-3"></span>
+      <span class="ring-4"></span>
+    </div>
 
-    <!-- App 1: Juego Impostor -->
-    <a href="https://juegaimpostor.vercel.app/" target="_blank" rel="noopener noreferrer" class="card">
-      <span class="icon">🕵️</span>
-      <h2>Juego Impostor</h2>
-      <p>Descubre al impostor en este juego de deducción social.</p>
-      <span class="btn">Abrir App</span>
-    </a>
+    <!-- Hazard icon markers scattered a radios orbitales fijos -->
+    <div class="hazard hazard--1" aria-hidden="true">☢</div>
+    <div class="hazard hazard--2" aria-hidden="true">⚠</div>
+    <div class="hazard hazard--3" aria-hidden="true">☣</div>
+    <div class="hazard hazard--4" aria-hidden="true">✕</div>
+    <div class="hazard hazard--5" aria-hidden="true">!</div>
+    <div class="hazard hazard--6" aria-hidden="true">☢</div>
 
-    <!-- App 2: Inventario Perfume -->
-    <a href="https://inventarioperfume.vercel.app/" target="_blank" rel="noopener noreferrer" class="card">
-      <span class="icon">🌸</span>
-      <h2>Inventario Perfume</h2>
-      <p>Gestiona tu colección de perfumes de forma sencilla.</p>
-      <span class="btn">Abrir App</span>
-    </a>
+    <!-- Brand wordmark siteline -->
+    <div class="wordmark">// Mis Proyectos //</div>
 
-    <!-- App 3: QR Generator -->
-    <a href="https://qr-generator-three-inky.vercel.app/" target="_blank" rel="noopener noreferrer" class="card">
-      <span class="icon">🔳</span>
-      <h2>QR Generator</h2>
-      <p>Crea códigos QR personalizados en segundos.</p>
-      <span class="btn">Abrir App</span>
-    </a>
+    <!-- Display headline — massive, condensed, touching -->
+    <h1>
+      REPOS<br>
+      <span class="alert">&amp;</span> APPS<br>
+      EN VIVO
+    </h1>
 
+    <!-- Subhead editorial -->
+    <p class="subhead">
+      Acceso directo a cada proyecto desplegado. Sin intermediarios. Sin dashboards.
+      Solo el enlace y tú.
+    </p>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       📋 MANIFESTO — Prose editorial + lista de apps
+       ─────────────────────────────────────────────────────────
+       📌 CÓMO AÑADIR UNA NUEVA APP
+       Copia y pega este bloque <li> dentro del <ul class="apps-list">:
+
+       <li class="app-item">
+         <span class="index">IV</span>
+         <div class="meta">
+           <h3>NOMBRE DE LA APP</h3>
+           <p>Descripción breve en sentence case.</p>
+         </div>
+         <a href="TU_URL_AQUI" target="_blank" rel="noopener noreferrer"
+            class="btn-pill">
+           ABRIR →
+         </a>
+       </li>
+
+       📌 NUMERACIÓN ROMANA sugerida: I, II, III, IV, V, VI, VII, VIII, IX, X
+       📌 Si necesitas más de 10, puedes usar I, II... o pasar a arábigos.
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="manifesto">
+
+    <div class="kicker">Transmisión de emergencia</div>
+
+    <p>
+      Los siguientes proyectos están <span class="correction">perdidos en el olvido</span>
+      desplegados y operativos. Accede a cada uno sin fricción — cada enlace abre
+      en una pestaña nueva, dejando esta transmisión intacta.
+    </p>
+
+    <p>
+      Todos los despliegues corren en <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">Vercel</a>.
+      Actualiza esta página cada vez que publiques algo nuevo.
+    </p>
+
+    <!-- Lista editorial de apps -->
+    <ul class="apps-list">
+
+      <!-- ─────────── APP I: Juego Impostor ─────────── -->
+      <li class="app-item">
+        <span class="index">I</span>
+        <div class="meta">
+          <h3>Juego Impostor</h3>
+          <p>Deducción social para grupos. Descubre al impostor antes de que sea tarde.</p>
+        </div>
+        <a href="https://juegaimpostor.vercel.app/"
+           target="_blank" rel="noopener noreferrer"
+           class="btn-pill">
+          ABRIR →
+        </a>
+      </li>
+
+      <!-- ─────────── APP II: Inventario Perfume ─────────── -->
+      <li class="app-item">
+        <span class="index">II</span>
+        <div class="meta">
+          <h3>Inventario Perfume</h3>
+          <p>Gestión y organización de tu colección de perfumes.</p>
+        </div>
+        <a href="https://inventarioperfume.vercel.app/"
+           target="_blank" rel="noopener noreferrer"
+           class="btn-pill">
+          ABRIR →
+        </a>
+      </li>
+
+      <!-- ─────────── APP III: QR Generator ─────────── -->
+      <li class="app-item">
+        <span class="index">III</span>
+        <div class="meta">
+          <h3>QR Generator</h3>
+          <p>Generador de códigos QR personalizados.</p>
+        </div>
+        <a href="https://qr-generator-three-inky.vercel.app/"
+           target="_blank" rel="noopener noreferrer"
+           class="btn-pill">
+          ABRIR →
+        </a>
+      </li>
+
+      <!-- ─────────── PLANTILLA — descomenta para usar ───────────
+      <li class="app-item">
+        <span class="index">IV</span>
+        <div class="meta">
+          <h3>Nombre de la App</h3>
+          <p>Descripción breve en sentence case.</p>
+        </div>
+        <a href="https://TU-NUEVA-URL.vercel.app/"
+           target="_blank" rel="noopener noreferrer"
+           class="btn-pill">
+          ABRIR →
+        </a>
+      </li>
+      ─────────────────────────────────────────────────────────── -->
+
+    </ul>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       🦶 FLAME FOOTER — siluetas planas rojas
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="flames" aria-hidden="true">
+    <div class="flame flame--sm"></div>
+    <div class="flame"></div>
+    <div class="flame flame--lg"></div>
+    <div class="flame flame--xl"></div>
+    <div class="flame flame--lg"></div>
+    <div class="flame flame--xl"></div>
+    <div class="flame flame--lg"></div>
+    <div class="flame"></div>
+    <div class="flame flame--sm"></div>
+    <div class="flame"></div>
+    <div class="flame flame--lg"></div>
+    <div class="flame flame--xl"></div>
+    <div class="flame flame--lg"></div>
+    <div class="flame"></div>
+    <div class="flame flame--sm"></div>
   </div>
 
-  <div class="footer">
-    Hecho con 💜 · Mis proyectos en Vercel
-  </div>
+  <!-- ═══════════════════════════════════════════════════════════
+       📌 FOOTER MARK
+       ═══════════════════════════════════════════════════════════ -->
+  <footer class="footer-mark">
+    DESPLEGADO EN VERCEL <span class="dot"></span> TRANSMISIÓN ACTIVA <span class="dot"></span> 2026
+  </footer>
 
 </body>
 </html>
