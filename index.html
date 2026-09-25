@@ -2,748 +2,778 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <!--
-    ═══════════════════════════════════════════════════════════════
-    📱 VIEWPORT — Bloqueo de zoom en iOS
-    ─────────────────────────────────────────────────────────────
-    • maximum-scale=1     → impide pinch-zoom en Safari iOS
-    • user-scalable=no    → impide doble-tap zoom en iOS antiguo
-    • viewport-fit=cover  → extiende el layout bajo el notch/home indicator
-    ═══════════════════════════════════════════════════════════════
-  -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#000000">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>MIS REPOS Y APPS // EMERGENCY BROADCAST</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REPOS & APPS // FOUNDRY</title>
 
   <!--
     ═══════════════════════════════════════════════════════════════
-    🔤 FUENTES (sustitutos de Spektra y Helvetica Neue LT)
+    🔤 FUENTES
     ═══════════════════════════════════════════════════════════════
+      - JetBrains Mono → chrome de UI (nav, labels, buttons, metadata)
+      - Inter          → body copy de párrafo largo (uso escaso)
+      - Archivo Black  → specimens de display (sustituto del ref)
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     /* ═══════════════════════════════════════════════════════════
-       🎯 DESIGN TOKENS — Cards Against Humanity Style Reference
+       🎯 DESIGN TOKENS — Foundry Style Reference
        ═══════════════════════════════════════════════════════════ */
     :root {
-      /* Colors — 4 tokens, ni uno más */
-      --color-void-black: #000000;
-      --color-bone-cream: #ebe4d8;
-      --color-ash-taupe: #c3bdb3;
-      --color-alarm-red: #ff4034;
+      /* Colors — monochrome neutrals + UN solo acento cromático */
+      --color-ember-orange: #ff4d00;
+      --color-foundry-black: #121212;
+      --color-chalk-white: #e2e8f0;
+      --color-bone-white: #efefef;
+      --color-soot: #3a3a3a;
+      --color-ash: #747474;
 
       /* Typography */
-      --font-spektra: 'Anton', 'Bebas Neue', 'League Gothic', Impact, sans-serif;
-      --font-body: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      --font-display: 'Archivo Black', Impact, sans-serif;
+
+      /* Type Scale */
+      --text-caption: 12px;
+      --text-body-sm: 14px;
+      --text-body: 16px;
+      --text-subheading: 18px;
 
       /* Spacing */
+      --spacing-4: 4px;
       --spacing-8: 8px;
       --spacing-12: 12px;
-      --spacing-15: 15px;
       --spacing-20: 20px;
-      --spacing-25: 25px;
-      --spacing-30: 30px;
-      --spacing-40: 40px;
-      --spacing-60: 60px;
-      --spacing-80: 80px;
+      --spacing-24: 24px;
       --spacing-100: 100px;
 
-      /* Radii */
-      --radius-input: 10px;
-      --radius-button-sm: 48px;
-      --radius-button-md: 80px;
-      --radius-button-lg: 120px;
-      --radius-card: 2520px;
+      /* Radii — afilados, nunca mayor a 8px */
+      --radius-sm: 2.8px;
+      --radius-lg: 8px;
+
+      /* Surfaces */
+      --surface-canvas: #121212;
+      --surface-inverted: #efefef;
+
+      /* Layout */
+      --sidebar-width: 220px;
+      --page-max-width: 1440px;
     }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     /* ═══════════════════════════════════════════════════════════
-       🔧 RESET + ANTI-ZOOM + ANTI-OVERFLOW
+       ⬛ CANVAS — Foundry Black #121212
+       Sin sombras, sin gradientes. Profundidad por inversión + hairlines.
        ═══════════════════════════════════════════════════════════ */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      /* iOS: evita el highlight azul al tocar enlaces */
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html {
-      /* iOS: impide que Safari escale el texto automáticamente */
-      -webkit-text-size-adjust: 100%;
-      text-size-adjust: 100%;
-      /* iOS: evita el "rubber band" horizontal */
-      overflow-x: hidden;
-      background: #000000;
-      /* Suaviza el scroll en iOS */
-      -webkit-overflow-scrolling: touch;
-    }
-
     body {
-      font-family: var(--font-body);
-      color: var(--color-bone-cream);
-      background: var(--color-void-black);
-      line-height: 1.27;
-      overflow-x: hidden;
-      /* iOS: ocupa toda la altura incluyendo safe areas */
+      background: var(--surface-canvas);
+      color: var(--color-bone-white);
+      font-family: var(--font-mono);
+      font-size: var(--text-body-sm);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
       min-height: 100vh;
-      min-height: 100dvh;
-      position: relative;
-      /* iOS: evita zoom por doble tap en elementos interactivos */
-      touch-action: manipulation;
-    }
-
-    /* iOS: evita zoom al hacer focus en enlaces/botones */
-    a, button {
-      touch-action: manipulation;
-      -webkit-user-select: none;
-      user-select: none;
     }
 
     /* ═══════════════════════════════════════════════════════════
-       📡 RADAR — fondo decorativo, siempre detrás y sin scroll
-       Usa aspect-ratio para escalar perfectamente en cualquier pantalla
+       📰 TICKER BAR — full-bleed, 1px, scroll horizontal
        ═══════════════════════════════════════════════════════════ */
-    .radar {
-      position: absolute;
+    .ticker {
+      position: fixed;
       top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(1400px, 200vw);
-      aspect-ratio: 1 / 1;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.9;
-    }
-
-    .radar::before,
-    .radar::after,
-    .radar .ring-3,
-    .radar .ring-4 {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-    }
-
-    .radar::before {
-      width: 30%;
-      aspect-ratio: 1;
-      border: 2px solid var(--color-alarm-red);
-    }
-
-    .radar::after {
-      width: 55%;
-      aspect-ratio: 1;
-      border: 2px dashed var(--color-alarm-red);
-      opacity: 0.7;
-    }
-
-    .radar .ring-3 {
-      width: 80%;
-      aspect-ratio: 1;
-      border: 1px solid var(--color-alarm-red);
-      opacity: 0.45;
-    }
-
-    .radar .ring-4 {
-      width: 100%;
-      aspect-ratio: 1;
-      border: 2px dashed var(--color-alarm-red);
-      opacity: 0.25;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       ☢️ HAZARD ICONS — posiciones con % para adaptarse a cualquier tamaño
-       ═══════════════════════════════════════════════════════════ */
-    .hazard {
-      position: absolute;
-      width: clamp(16px, 2vw, 24px);
-      height: clamp(16px, 2vw, 24px);
-      background: var(--color-alarm-red);
-      color: var(--color-bone-cream);
+      left: 0;
+      right: 0;
+      height: 28px;
+      background: var(--surface-canvas);
+      border-bottom: 1px solid var(--color-chalk-white);
+      overflow: hidden;
+      z-index: 100;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: clamp(10px, 1.2vw, 14px);
-      line-height: 1;
-      z-index: 1;
-      font-family: var(--font-body);
-      font-weight: 800;
     }
 
-    .hazard--1 { top: 18%;  left: 22%; }
-    .hazard--2 { top: 32%;  right: 20%; }
-    .hazard--3 { top: 62%;  left: 14%; }
-    .hazard--4 { top: 74%;  right: 16%; }
-    .hazard--5 { top: 12%;  right: 32%; }
-    .hazard--6 { bottom: 8%; left: 42%; }
-
-    /* Ocultar hazard icons en pantallas muy pequeñas para evitar ruido */
-    @media (max-width: 420px) {
-      .hazard--5,
-      .hazard--6 {
-        display: none;
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       📰 HERO — Display headline con clamp fluido
-       ═══════════════════════════════════════════════════════════ */
-    .hero {
-      position: relative;
-      min-height: 100svh;   /* small viewport height, evita saltos en iOS */
+    .ticker__track {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding:
-        calc(var(--spacing-80) + env(safe-area-inset-top, 0px))
-        calc(var(--spacing-30) + env(safe-area-inset-right, 0px))
-        calc(var(--spacing-80) + env(safe-area-inset-bottom, 0px))
-        calc(var(--spacing-30) + env(safe-area-inset-left, 0px));
-      text-align: center;
-      z-index: 2;
-    }
-
-    .wordmark {
-      font-family: var(--font-spektra);
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      line-height: 1;
-      color: var(--color-bone-cream);
-      letter-spacing: 0.02em;
-      margin-bottom: var(--spacing-40);
-      text-transform: uppercase;
-      font-weight: 400;
-    }
-
-    /* Display headline — fluye entre 3rem (móvil pequeño) y 202px (desktop XL) */
-    .hero h1 {
-      font-family: var(--font-spektra);
-      font-weight: 400;
-      font-size: clamp(3rem, 16vw, 202px);
-      line-height: 0.82;
-      letter-spacing: 0.01em;
-      color: var(--color-bone-cream);
-      text-transform: uppercase;
-      max-width: 14ch;
-      /* Fuerza el salto de línea visual para que no desborde */
-      overflow-wrap: break-word;
-      word-break: break-word;
-    }
-
-    .hero h1 .alert {
-      color: var(--color-alarm-red);
-    }
-
-    .hero .subhead {
-      font-family: var(--font-body);
-      font-weight: 400;
-      font-size: clamp(0.9rem, 2vw, 1rem);
-      line-height: 1.27;
-      color: var(--color-bone-cream);
-      max-width: 680px;
-      width: 100%;
-      margin-top: var(--spacing-40);
-      padding: 0 var(--spacing-15);
-      letter-spacing: 0.01em;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       📋 MANIFESTO — columna centrada, max 680px
-       ═══════════════════════════════════════════════════════════ */
-    .manifesto {
-      position: relative;
-      max-width: 680px;
-      width: 100%;
-      margin: 0 auto;
-      padding:
-        0
-        calc(var(--spacing-30) + env(safe-area-inset-right, 0px))
-        var(--spacing-80)
-        calc(var(--spacing-30) + env(safe-area-inset-left, 0px));
-      z-index: 2;
-    }
-
-    .manifesto .kicker {
-      font-family: var(--font-spektra);
-      font-size: clamp(1.25rem, 3vw, 1.875rem);
-      line-height: 1;
-      color: var(--color-alarm-red);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: var(--spacing-20);
-    }
-
-    .manifesto p {
-      font-family: var(--font-body);
-      font-size: clamp(0.95rem, 1.5vw, 1rem);
-      line-height: 1.27;
-      color: var(--color-bone-cream);
-      margin-bottom: var(--spacing-30);
-    }
-
-    .manifesto p a {
-      color: var(--color-bone-cream);
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
-    }
-
-    .manifesto p .correction {
-      color: var(--color-alarm-red);
-      text-decoration: line-through;
-      text-decoration-thickness: 1px;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🗂️ LISTA DE APPS
-       ═══════════════════════════════════════════════════════════ */
-    .apps-list {
-      list-style: none;
-      margin-top: var(--spacing-60);
-    }
-
-    .app-item {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
       gap: var(--spacing-20);
-      padding: var(--spacing-30) 0;
-      border-top: 1px solid var(--color-bone-cream);
-    }
-
-    .app-item:last-child {
-      border-bottom: 1px solid var(--color-bone-cream);
-    }
-
-    .app-item .index {
-      font-family: var(--font-spektra);
-      font-size: clamp(1.5rem, 3vw, 1.875rem);
-      line-height: 1;
-      color: var(--color-alarm-red);
-      min-width: clamp(40px, 6vw, 60px);
-    }
-
-    .app-item .meta {
-      min-width: 0; /* evita overflow en grid */
-    }
-
-    .app-item .meta h3 {
-      font-family: var(--font-spektra);
-      font-weight: 400;
-      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-      line-height: 1.05;
-      color: var(--color-bone-cream);
+      white-space: nowrap;
+      animation: ticker-scroll 40s linear infinite;
+      font-size: var(--text-caption);
       text-transform: uppercase;
-      letter-spacing: 0.02em;
-      margin-bottom: 4px;
-      overflow-wrap: break-word;
-      word-break: break-word;
+      letter-spacing: 0.04em;
+      color: var(--color-bone-white);
+      padding-left: var(--spacing-20);
     }
 
-    .app-item .meta p {
-      font-family: var(--font-body);
-      font-size: clamp(0.8rem, 1.4vw, 0.875rem);
-      line-height: 1.27;
-      color: var(--color-ash-taupe);
-      margin: 0;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🔘 PILL BUTTONS — Mantienen proporción en toda pantalla
-       font-size mínimo 16px en móvil para iOS (evita auto-zoom)
-       ═══════════════════════════════════════════════════════════ */
-    .btn-pill {
+    .ticker__track span {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-family: var(--font-body);
-      font-weight: 800;
-      /* iOS: 16px mínimo, así no hace zoom si algún día es input */
-      font-size: 16px;
-      background: var(--color-bone-cream);
-      color: var(--color-void-black);
-      padding: 15px 30px;
-      border-radius: var(--radius-button-md);
+      gap: var(--spacing-20);
+    }
+
+    /* Triangle marker separator */
+    .ticker__track span::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 7px solid var(--color-ember-orange);
+      display: inline-block;
+    }
+
+    .ticker__track span:last-child::after { display: none; }
+
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       📌 SIDEBAR — fixed-left, ~220px, navegación como tags
+       ═══════════════════════════════════════════════════════════ */
+    .sidebar {
+      position: fixed;
+      top: 28px;
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-width);
+      background: var(--surface-canvas);
+      border-right: 1px solid var(--color-chalk-white);
+      padding: var(--spacing-24) var(--spacing-20);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+      overflow-y: auto;
+      z-index: 50;
+    }
+
+    /* Logo mark — 2 líneas, display, ember orange */
+    .logo {
+      font-family: var(--font-display);
+      font-size: 22px;
+      line-height: 0.95;
+      color: var(--color-ember-orange);
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--spacing-8);
+    }
+
+    /* Section header con L-bracket marker */
+    .sidebar__group-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-caption);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-bone-white);
+      margin-bottom: var(--spacing-8);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+
+    .sidebar__group-label::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-left: 1px solid var(--color-bone-white);
+      border-bottom: 1px solid var(--color-bone-white);
+      display: inline-block;
+    }
+
+    .sidebar__nav {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-4);
+    }
+
+    /* Tag nav item — inverted surface fill */
+    .tag {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-8);
+      padding: 6px 10px;
+      background: var(--surface-inverted);
+      color: var(--surface-canvas);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
       text-decoration: none;
-      border: none;
+      transition: opacity 0.1s ease;
+    }
+
+    .tag:hover {
+      opacity: 0.8;
+    }
+
+    .tag__count {
+      font-size: 10px;
+      color: var(--color-ash);
+    }
+
+    /* Sidebar footer */
+    .sidebar__footer {
+      margin-top: auto;
+      padding-top: var(--spacing-20);
+      border-top: 1px solid var(--color-soot);
+      font-size: var(--text-caption);
+      color: var(--color-ash);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-8);
+    }
+
+    .sidebar__footer a {
+      color: var(--color-ash);
+      text-decoration: none;
+    }
+
+    .sidebar__footer a:hover {
+      color: var(--color-ember-orange);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🖥️ MAIN — offset por sidebar, left-aligned
+       ═══════════════════════════════════════════════════════════ */
+    .main {
+      margin-left: var(--sidebar-width);
+      margin-top: 28px;
+      max-width: calc(var(--page-max-width) - var(--sidebar-width));
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🎭 HERO — massive specimen + body copy footnote
+       ═══════════════════════════════════════════════════════════ */
+    .hero {
+      padding: var(--spacing-100) var(--spacing-24) var(--spacing-24);
+      border-bottom: 1px solid var(--color-chalk-white);
+    }
+
+    .hero .metadata {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--spacing-12);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-bone-white);
+      margin-bottom: var(--spacing-24);
+    }
+
+    .hero .metadata .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero .metadata .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-ember-orange);
+      display: inline-block;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(3.5rem, 12vw, 180px);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      color: var(--color-bone-white);
+      text-transform: uppercase;
+      margin-bottom: var(--spacing-24);
+    }
+
+    /* Orange accent word — only as text accent, never fill */
+    .hero h1 .accent {
+      color: var(--color-ember-orange);
+    }
+
+    .hero .body-copy {
+      font-family: var(--font-inter);
+      font-size: var(--text-body-sm);
+      line-height: 1.5;
+      color: var(--color-bone-white);
+      max-width: 50ch;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🔤 SPECIMEN CARDS — cada app es una bandeja full-width
+       Con metadata strip arriba + display specimen gigante
+       ═══════════════════════════════════════════════════════════ */
+    .specimen {
+      border-bottom: 1px solid var(--color-chalk-white);
+      padding: 0;
+    }
+
+    /* Metadata strip — barra utility superior del specimen */
+    .specimen__strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--spacing-12);
+      padding: var(--spacing-12) var(--spacing-24);
+      border-bottom: 1px solid var(--color-chalk-white);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-bone-white);
+    }
+
+    .specimen__strip-left {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-12);
+    }
+
+    .specimen__index {
+      color: var(--color-ember-orange);
+      font-weight: 700;
+    }
+
+    .specimen__stats {
+      display: flex;
+      gap: var(--spacing-12);
+      color: var(--color-ash);
+    }
+
+    .specimen__strip-actions {
+      display: flex;
+      gap: var(--spacing-8);
+    }
+
+    /* Specimen body — display name + action buttons */
+    .specimen__body {
+      padding: var(--spacing-24) var(--spacing-24) var(--spacing-24);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: var(--spacing-24);
+    }
+
+    .specimen__name {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(3rem, 10vw, 140px);
+      line-height: 0.95;
+      letter-spacing: 0.01em;
+      color: var(--color-bone-white);
+      text-transform: uppercase;
+      word-break: break-word;
+    }
+
+    .specimen__desc {
+      grid-column: 1 / -1;
+      font-family: var(--font-inter);
+      font-size: var(--text-body-sm);
+      line-height: 1.5;
+      color: var(--color-bone-white);
+      max-width: 55ch;
+      margin-top: var(--spacing-8);
+    }
+
+    .specimen__actions {
+      display: flex;
+      gap: var(--spacing-8);
+      align-items: flex-end;
+      padding-bottom: var(--spacing-8);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🔘 BOTONES — outline puro, sin fill, radius 2.8px
+       3 variantes: outlined orange (primary), ghost white (secondary)
+       ═══════════════════════════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 15px;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      font-family: var(--font-mono);
+      font-size: var(--text-caption);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-decoration: none;
       cursor: pointer;
-      box-shadow: 0 4px 0 var(--color-ash-taupe);
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
-      letter-spacing: 0.02em;
+      transition: background-color 0.12s ease, color 0.12s ease;
       white-space: nowrap;
     }
 
-    .btn-pill:hover {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 var(--color-ash-taupe);
+    /* Outlined orange — CTA canónico (nunca filled) */
+    .btn--orange {
+      border: 1px solid var(--color-ember-orange);
+      color: var(--color-ember-orange);
     }
 
-    .btn-pill:active {
-      transform: translateY(4px);
-      box-shadow: 0 0 0 var(--color-ash-taupe);
+    .btn--orange:hover {
+      background: var(--color-ember-orange);
+      color: var(--surface-canvas);
     }
 
-    .btn-pill--lg {
-      padding: 20px 60px;
-      border-radius: var(--radius-button-lg);
+    /* Ghost white — acción secundaria */
+    .btn--ghost {
+      border: 1px solid var(--color-bone-white);
+      color: var(--color-bone-white);
     }
 
-    .btn-pill--sm {
-      padding: 10px 20px;
-      border-radius: var(--radius-button-sm);
-      font-size: 14px; /* es un botón, no input — seguro */
+    .btn--ghost:hover {
+      background: var(--color-bone-white);
+      color: var(--surface-canvas);
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🦶 FLAME FOOTER — escala fluida, sin overflow
+       🦶 FOOTER
        ═══════════════════════════════════════════════════════════ */
-    .flames {
-      position: relative;
-      width: 100%;
-      height: clamp(70px, 12vw, 140px);
-      margin-top: var(--spacing-100);
+    .footer {
+      padding: var(--spacing-24);
+      font-family: var(--font-mono);
+      font-size: var(--text-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-ash);
       display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      overflow: hidden;
-      z-index: 2;
-    }
-
-    .flame {
-      width: 0;
-      height: 0;
-      flex-shrink: 0;
-      border-left: clamp(12px, 1.8vw, 22px) solid transparent;
-      border-right: clamp(12px, 1.8vw, 22px) solid transparent;
-      border-bottom: clamp(50px, 9vw, 90px) solid var(--color-alarm-red);
-      margin: 0 -3px;
-      position: relative;
-    }
-
-    .flame::after {
-      content: '';
-      position: absolute;
-      top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: clamp(5px, 0.8vw, 10px) solid transparent;
-      border-right: clamp(5px, 0.8vw, 10px) solid transparent;
-      border-bottom: clamp(24px, 4.2vw, 42px) solid var(--color-void-black);
-    }
-
-    .flame--sm { border-bottom-width: clamp(35px, 6vw, 60px); }
-    .flame--lg { border-bottom-width: clamp(70px, 12vw, 120px); }
-    .flame--xl { border-bottom-width: clamp(80px, 14vw, 140px); }
-
-    /* ═══════════════════════════════════════════════════════════
-       📌 FOOTER MARK
-       ═══════════════════════════════════════════════════════════ */
-    .footer-mark {
-      text-align: center;
-      padding:
-        var(--spacing-40)
-        calc(var(--spacing-20) + env(safe-area-inset-right, 0px))
-        calc(var(--spacing-60) + env(safe-area-inset-bottom, 0px))
-        calc(var(--spacing-20) + env(safe-area-inset-left, 0px));
-      font-family: var(--font-body);
-      font-size: clamp(0.7rem, 1.2vw, 0.875rem);
-      color: var(--color-ash-taupe);
-      letter-spacing: 0.02em;
-      position: relative;
-      z-index: 2;
-    }
-
-    .footer-mark .dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: var(--color-alarm-red);
-      margin: 0 8px;
-      vertical-align: middle;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
     }
 
     /* ═══════════════════════════════════════════════════════════
-       📱 BREAKPOINT: TABLET (≤ 900px)
+       📱 RESPONSIVE
        ═══════════════════════════════════════════════════════════ */
     @media (max-width: 900px) {
-      .hero {
-        padding-top: calc(var(--spacing-60) + env(safe-area-inset-top, 0px));
-        padding-bottom: calc(var(--spacing-60) + env(safe-area-inset-bottom, 0px));
-      }
-      .manifesto {
-        padding-bottom: var(--spacing-60);
-      }
-      .flames {
-        margin-top: var(--spacing-60);
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       📱 BREAKPOINT: MÓVIL (≤ 640px)
-       ═══════════════════════════════════════════════════════════ */
-    @media (max-width: 640px) {
-      .hero {
-        min-height: auto;
-        padding-top: calc(var(--spacing-60) + env(safe-area-inset-top, 0px));
-        padding-bottom: var(--spacing-40);
-      }
-
-      .wordmark {
-        margin-bottom: var(--spacing-20);
-      }
-
-      .hero .subhead {
-        margin-top: var(--spacing-30);
-      }
-
-      /* App item pasa a 2 columnas: número+contenido, botón full-width debajo */
-      .app-item {
-        grid-template-columns: auto 1fr;
-        gap: var(--spacing-15);
-        padding: var(--spacing-25) 0;
-      }
-
-      .app-item .btn-pill {
-        grid-column: 1 / -1;
+      .sidebar {
+        position: relative;
+        top: 28px;
         width: 100%;
-        padding: 14px 20px;
+        border-right: none;
+        border-bottom: 1px solid var(--color-chalk-white);
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: var(--spacing-12) var(--spacing-20);
+        gap: var(--spacing-12);
+        align-items: center;
       }
 
-      .apps-list {
-        margin-top: var(--spacing-40);
+      .sidebar__nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--spacing-4);
       }
 
-      .flame {
-        margin: 0 -2px;
+      .sidebar__footer {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        flex-direction: row;
+        gap: var(--spacing-12);
+      }
+
+      .main {
+        margin-left: 0;
+        margin-top: 0;
+      }
+
+      .specimen__body {
+        grid-template-columns: 1fr;
+      }
+
+      .specimen__actions {
+        padding-bottom: 0;
       }
     }
 
-    /* ═══════════════════════════════════════════════════════════
-       📱 BREAKPOINT: MÓVIL PEQUEÑO (≤ 400px)
-       ═══════════════════════════════════════════════════════════ */
-    @media (max-width: 400px) {
-      .hero h1 {
-        font-size: clamp(2.5rem, 14vw, 4rem);
-      }
-
-      .app-item .index {
-        min-width: 32px;
-      }
-
-      .app-item .meta h3 {
-        font-size: clamp(1.05rem, 4.5vw, 1.3rem);
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🖥️ PANTALLAS ULTRA-WIDE (≥ 1600px)
-       Limita el radar y evita que se vea vacío
-       ═══════════════════════════════════════════════════════════ */
-    @media (min-width: 1600px) {
-      .hero h1 {
-        font-size: 202px;
-      }
-      .radar {
-        width: 1600px;
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🔄 ORIENTACIÓN HORIZONTAL EN MÓVIL
-       Reduce altura del hero para no forzar scroll raro
-       ═══════════════════════════════════════════════════════════ */
-    @media (max-height: 500px) and (orientation: landscape) {
-      .hero {
-        min-height: auto;
-        padding-top: var(--spacing-40);
-        padding-bottom: var(--spacing-40);
-      }
-      .radar {
-        opacity: 0.4;
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       ♿ ACCESIBILIDAD — respeta "reduce motion"
-       ═══════════════════════════════════════════════════════════ */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        transition-duration: 0.01ms !important;
-        animation-duration: 0.01ms !important;
-      }
+    @media (max-width: 640px) {
+      .hero { padding: var(--spacing-24) var(--spacing-20) var(--spacing-24); }
+      .specimen__strip { padding: var(--spacing-12) var(--spacing-20); }
+      .specimen__body { padding: var(--spacing-20); }
+      .hero h1 { font-size: clamp(2.5rem, 14vw, 5rem); }
+      .specimen__name { font-size: clamp(2rem, 11vw, 4rem); }
     }
   </style>
 </head>
 <body>
 
   <!-- ═══════════════════════════════════════════════════════════
-       📡 HERO
+       📰 TICKER BAR — top full-bleed, scroll horizontal
        ═══════════════════════════════════════════════════════════ -->
-  <section class="hero">
-
-    <div class="radar" aria-hidden="true">
-      <span class="ring-3"></span>
-      <span class="ring-4"></span>
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span>TRANSMISIÓN ACTIVA</span>
+      <span>DEPLOYED ON VERCEL</span>
+      <span>N PROYECTOS EN VIVO</span>
+      <span>TYPE-AS-INTERFACE</span>
+      <span>BUILD // SHIP // REPEAT</span>
+      <span>TRANSMISIÓN ACTIVA</span>
+      <span>DEPLOYED ON VERCEL</span>
+      <span>N PROYECTOS EN VIVO</span>
+      <span>TYPE-AS-INTERFACE</span>
+      <span>BUILD // SHIP // REPEAT</span>
     </div>
-
-    <div class="hazard hazard--1" aria-hidden="true">☢</div>
-    <div class="hazard hazard--2" aria-hidden="true">⚠</div>
-    <div class="hazard hazard--3" aria-hidden="true">☣</div>
-    <div class="hazard hazard--4" aria-hidden="true">✕</div>
-    <div class="hazard hazard--5" aria-hidden="true">!</div>
-    <div class="hazard hazard--6" aria-hidden="true">☢</div>
-
-    <div class="wordmark">// Mis Proyectos //</div>
-
-    <h1>
-      REPOS<br>
-      <span class="alert">&amp;</span> APPS<br>
-      EN VIVO
-    </h1>
-
-    <p class="subhead">
-      Acceso directo a cada proyecto desplegado. Sin intermediarios. Sin dashboards.
-      Solo el enlace y tú.
-    </p>
-
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       📋 MANIFESTO + LISTA DE APPS
-       ─────────────────────────────────────────────────────────
-       📌 CÓMO AÑADIR UNA NUEVA APP
-       Copia y pega este bloque <li> dentro del <ul class="apps-list">:
-
-       <li class="app-item">
-         <span class="index">IV</span>
-         <div class="meta">
-           <h3>NOMBRE DE LA APP</h3>
-           <p>Descripción breve en sentence case.</p>
-         </div>
-         <a href="TU_URL_AQUI" target="_blank" rel="noopener noreferrer"
-            class="btn-pill">
-           ABRIR →
-         </a>
-       </li>
-
-       📌 NUMERACIÓN ROMANA: I, II, III, IV, V, VI, VII, VIII, IX, X
-       ═══════════════════════════════════════════════════════════ -->
-  <section class="manifesto">
-
-    <div class="kicker">Transmisión de emergencia</div>
-
-    <p>
-      Los siguientes proyectos están <span class="correction">perdidos en el olvido</span>
-      desplegados y operativos. Accede a cada uno sin fricción — cada enlace abre
-      en una pestaña nueva, dejando esta transmisión intacta.
-    </p>
-
-    <p>
-      Todos los despliegues corren en <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">Vercel</a>.
-      Actualiza esta página cada vez que publiques algo nuevo.
-    </p>
-
-    <ul class="apps-list">
-
-      <!-- ─────────── APP I ─────────── -->
-      <li class="app-item">
-        <span class="index">I</span>
-        <div class="meta">
-          <h3>Juego Impostor</h3>
-          <p>Deducción social para grupos. Descubre al impostor antes de que sea tarde.</p>
-        </div>
-        <a href="https://juegaimpostor.vercel.app/"
-           target="_blank" rel="noopener noreferrer"
-           class="btn-pill">
-          ABRIR →
-        </a>
-      </li>
-
-      <!-- ─────────── APP II ─────────── -->
-      <li class="app-item">
-        <span class="index">II</span>
-        <div class="meta">
-          <h3>Inventario Perfume</h3>
-          <p>Gestión y organización de tu colección de perfumes.</p>
-        </div>
-        <a href="https://inventarioperfume.vercel.app/"
-           target="_blank" rel="noopener noreferrer"
-           class="btn-pill">
-          ABRIR →
-        </a>
-      </li>
-
-      <!-- ─────────── APP III ─────────── -->
-      <li class="app-item">
-        <span class="index">III</span>
-        <div class="meta">
-          <h3>QR Generator</h3>
-          <p>Generador de códigos QR personalizados.</p>
-        </div>
-        <a href="https://qr-generator-three-inky.vercel.app/"
-           target="_blank" rel="noopener noreferrer"
-           class="btn-pill">
-          ABRIR →
-        </a>
-      </li>
-
-      <!-- ─────────── PLANTILLA — descomenta para usar ───────────
-      <li class="app-item">
-        <span class="index">IV</span>
-        <div class="meta">
-          <h3>Nombre de la App</h3>
-          <p>Descripción breve en sentence case.</p>
-        </div>
-        <a href="https://TU-NUEVA-URL.vercel.app/"
-           target="_blank" rel="noopener noreferrer"
-           class="btn-pill">
-          ABRIR →
-        </a>
-      </li>
-      ─────────────────────────────────────────────────────────── -->
-
-    </ul>
-
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       🦶 FLAME FOOTER
-       ═══════════════════════════════════════════════════════════ -->
-  <div class="flames" aria-hidden="true">
-    <div class="flame flame--sm"></div>
-    <div class="flame"></div>
-    <div class="flame flame--lg"></div>
-    <div class="flame flame--xl"></div>
-    <div class="flame flame--lg"></div>
-    <div class="flame flame--xl"></div>
-    <div class="flame flame--lg"></div>
-    <div class="flame"></div>
-    <div class="flame flame--sm"></div>
-    <div class="flame"></div>
-    <div class="flame flame--lg"></div>
-    <div class="flame flame--xl"></div>
-    <div class="flame flame--lg"></div>
-    <div class="flame"></div>
-    <div class="flame flame--sm"></div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════
-       📌 FOOTER MARK
+       📌 SIDEBAR — fixed-left, nav como tags invertidos
+       ─────────────────────────────────────────────────────────
+       📌 Para añadir una nueva app: añade un <a class="tag">
+       con href="#APP-ID" apuntando al id del specimen.
        ═══════════════════════════════════════════════════════════ -->
-  <footer class="footer-mark">
-    DESPLEGADO EN VERCEL <span class="dot"></span> TRANSMISIÓN ACTIVA <span class="dot"></span> 2026
-  </footer>
+  <aside class="sidebar">
+
+    <!-- Logo mark — dos líneas, ember orange -->
+    <div class="logo">
+      Mis<br>Repos.
+    </div>
+
+    <div>
+      <div class="sidebar__group-label">Catálogo</div>
+      <nav class="sidebar__nav">
+
+        <!-- ────── TAG: App 1 ────── -->
+        <a href="#app-impostor" class="tag">
+          <span>Impostor</span>
+          <span class="tag__count">01</span>
+        </a>
+
+        <!-- ────── TAG: App 2 ────── -->
+        <a href="#app-perfume" class="tag">
+          <span>Perfume</span>
+          <span class="tag__count">02</span>
+        </a>
+
+        <!-- ────── TAG: App 3 ────── -->
+        <a href="#app-qr" class="tag">
+          <span>QR Gen</span>
+          <span class="tag__count">03</span>
+        </a>
+
+        <!-- ────── PLANTILLA — descomenta para usar ──────
+        <a href="#app-nueva" class="tag">
+          <span>NombreCorto</span>
+          <span class="tag__count">04</span>
+        </a>
+        ─────────────────────────────────────────────── -->
+
+      </nav>
+    </div>
+
+    <div class="sidebar__footer">
+      <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">→ VERCEL</a>
+      <span>© 2026 // FOUNDRY</span>
+    </div>
+
+  </aside>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       🖥️ MAIN
+       ═══════════════════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- ─────────── HERO ─────────── -->
+    <section class="hero">
+      <div class="metadata">
+        <span class="meta-item"><span class="dot"></span> FOUNDRY / CATÁLOGO</span>
+        <span class="meta-item">03 SPECIMENS · DESPLEGADOS</span>
+        <span class="meta-item">2026 · V.1.0</span>
+      </div>
+      <h1>
+        Repos<br>
+        <span class="accent">&amp;</span> Apps.
+      </h1>
+      <p class="body-copy">
+        Un catálogo de proyectos desplegados. Cada entrada es un specimen:
+        metadata arriba, specimen de display en medio, y dos acciones — nunca más de dos.
+        Todos los despliegues corren en Vercel.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         🔤 SPECIMEN CARDS — una por app
+         ─────────────────────────────────────────────────────────
+         📌 CÓMO AÑADIR UNA NUEVA APP (copia este bloque completo):
+
+         <section class="specimen" id="app-NUEVA">
+           <div class="specimen__strip">
+             <div class="specimen__strip-left">
+               <span class="specimen__index">04</span>
+               <span>NOMBRE-APP</span>
+               <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
+             </div>
+             <div class="specimen__strip-actions">
+               <span>↗ LIVE</span>
+             </div>
+           </div>
+           <div class="specimen__body">
+             <h2 class="specimen__name">Nombre<br>App</h2>
+             <div class="specimen__actions">
+               <a href="TU_URL" target="_blank" rel="noopener noreferrer" class="btn btn--orange">
+                 BUY NOW →
+               </a>
+               <a href="#" class="btn btn--ghost">EXPLORE</a>
+             </div>
+             <p class="specimen__desc">
+               Descripción breve en una o dos líneas, en sentence case.
+             </p>
+           </div>
+         </section>
+
+         📌 TAMBIÉN AÑADE UN TAG en el sidebar apuntando a #app-NUEVA.
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ─────────── SPECIMEN 01: JUEGO IMPOSTOR ─────────── -->
+    <section class="specimen" id="app-impostor">
+      <div class="specimen__strip">
+        <div class="specimen__strip-left">
+          <span class="specimen__index">01</span>
+          <span>JUEGO IMPOSTOR</span>
+          <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
+        </div>
+        <div class="specimen__strip-actions">
+          <span>↗ LIVE</span>
+        </div>
+      </div>
+      <div class="specimen__body">
+        <h2 class="specimen__name">Juego<br>Impostor</h2>
+        <div class="specimen__actions">
+          <a href="https://juegaimpostor.vercel.app/"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--orange">
+            ABRIR →
+          </a>
+          <a href="https://juegaimpostor.vercel.app/"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--ghost">
+            EXPLORE
+          </a>
+        </div>
+        <p class="specimen__desc">
+          Deducción social para grupos. Descubre al impostor antes de que sea tarde.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────── SPECIMEN 02: INVENTARIO PERFUME ─────────── -->
+    <section class="specimen" id="app-perfume">
+      <div class="specimen__strip">
+        <div class="specimen__strip-left">
+          <span class="specimen__index">02</span>
+          <span>INVENTARIO PERFUME</span>
+          <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
+        </div>
+        <div class="specimen__strip-actions">
+          <span>↗ LIVE</span>
+        </div>
+      </div>
+      <div class="specimen__body">
+        <h2 class="specimen__name">Inventario<br>Perfume</h2>
+        <div class="specimen__actions">
+          <a href="https://inventarioperfume.vercel.app/"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--orange">
+            ABRIR →
+          </a>
+          <a href="https://inventarioperfume.vercel.app/"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--ghost">
+            EXPLORE
+          </a>
+        </div>
+        <p class="specimen__desc">
+          Gestión y organización de tu colección de perfumes. Añade, edita y filtra.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────── SPECIMEN 03: QR GENERATOR ─────────── -->
+    <section class="specimen" id="app-qr">
+      <div class="specimen__strip">
+        <div class="specimen__strip-left">
+          <span class="specimen__index">03</span>
+          <span>QR GENERATOR</span>
+          <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
+        </div>
+        <div class="specimen__strip-actions">
+          <span>↗ LIVE</span>
+        </div>
+      </div>
+      <div class="specimen__body">
+        <h2 class="specimen__name">QR<br>Generator</h2>
+        <div class="specimen__actions">
+          <a href="https://qr-generator-three-inky.vercel.app/"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--orange">
+            ABRIR →
+          </a>
+          <a href="https://qr-generator-three-inky.vercel.app/"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--ghost">
+            EXPLORE
+          </a>
+        </div>
+        <p class="specimen__desc">
+          Generador de códigos QR personalizados. Rápido, limpio, descargable.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────── PLANTILLA VACÍA — descomenta para usar ───────────
+    <section class="specimen" id="app-nueva">
+      <div class="specimen__strip">
+        <div class="specimen__strip-left">
+          <span class="specimen__index">04</span>
+          <span>NOMBRE DE LA APP</span>
+          <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
+        </div>
+        <div class="specimen__strip-actions">
+          <span>↗ LIVE</span>
+        </div>
+      </div>
+      <div class="specimen__body">
+        <h2 class="specimen__name">Nombre<br>App</h2>
+        <div class="specimen__actions">
+          <a href="https://TU-URL.vercel.app/"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--orange">
+            ABRIR →
+          </a>
+          <a href="https://TU-URL.vercel.app/"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--ghost">
+            EXPLORE
+          </a>
+        </div>
+        <p class="specimen__desc">
+          Descripción breve en una o dos líneas, en sentence case.
+        </p>
+      </div>
+    </section>
+    ─────────────────────────────────────────────────────────────── -->
+
+    <!-- ─────────── FOOTER ─────────── -->
+    <footer class="footer">
+      <span>// FIN DEL CATÁLOGO</span>
+      <span>DESPLEGADO EN VERCEL · 2026</span>
+    </footer>
+
+  </main>
 
 </body>
 </html>
