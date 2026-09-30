@@ -3,777 +3,858 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>REPOS & APPS // FOUNDRY</title>
+  <title>Mis Repos & Apps — Catalogue</title>
 
   <!--
     ═══════════════════════════════════════════════════════════════
     🔤 FUENTES
     ═══════════════════════════════════════════════════════════════
-      - JetBrains Mono → chrome de UI (nav, labels, buttons, metadata)
-      - Inter          → body copy de párrafo largo (uso escaso)
-      - Archivo Black  → specimens de display (sustituto del ref)
+      te-20 (sustituto) → Inter weight 100/300
+      te-40 (sustituto) → Inter weight 300
+    ═══════════════════════════════════════════════════════════════
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300&display=swap" rel="stylesheet">
 
   <style>
     /* ═══════════════════════════════════════════════════════════
-       🎯 DESIGN TOKENS — Foundry Style Reference
+       🎯 DESIGN TOKENS — teenage engineering Style Reference
        ═══════════════════════════════════════════════════════════ */
     :root {
-      /* Colors — monochrome neutrals + UN solo acento cromático */
-      --color-ember-orange: #ff4d00;
-      --color-foundry-black: #121212;
-      --color-chalk-white: #e2e8f0;
-      --color-bone-white: #efefef;
-      --color-soot: #3a3a3a;
-      --color-ash: #747474;
+      /* Colors — 5 neutrales + 1 acento de advertencia */
+      --color-canvas-mist: #f6f8f7;
+      --color-ink-black: #000000;
+      --color-carbon: #0f0e12;
+      --color-steel-gray: #e5e5e5;
+      --color-graphite: #b2b2b2;
+      --color-link-blue: #0071bb;
+      --color-warn-amber: #f0a800;
 
       /* Typography */
-      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-      --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
-      --font-display: 'Archivo Black', Impact, sans-serif;
+      --font-te-20: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      --font-te-40: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
 
       /* Type Scale */
-      --text-caption: 12px;
-      --text-body-sm: 14px;
-      --text-body: 16px;
-      --text-subheading: 18px;
+      --text-caption: 13px;
+      --text-subheading: 19px;
+      --text-heading-sm: 24px;
+      --text-heading: 26px;
+      --text-heading-lg: 40px;
+
+      /* Weights */
+      --weight-thin: 100;
+      --weight-light: 300;
 
       /* Spacing */
-      --spacing-4: 4px;
-      --spacing-8: 8px;
-      --spacing-12: 12px;
-      --spacing-20: 20px;
-      --spacing-24: 24px;
-      --spacing-100: 100px;
-
-      /* Radii — afilados, nunca mayor a 8px */
-      --radius-sm: 2.8px;
-      --radius-lg: 8px;
-
-      /* Surfaces */
-      --surface-canvas: #121212;
-      --surface-inverted: #efefef;
+      --spacing-15: 15px;
+      --spacing-22: 22px;
+      --spacing-33: 33px;
+      --spacing-66: 66px;
 
       /* Layout */
-      --sidebar-width: 220px;
-      --page-max-width: 1440px;
+      --page-max-width: 1200px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html { scroll-behavior: smooth; }
+    /* CERO border-radius en todo el sistema */
+    * { border-radius: 0 !important; }
 
-    /* ═══════════════════════════════════════════════════════════
-       ⬛ CANVAS — Foundry Black #121212
-       Sin sombras, sin gradientes. Profundidad por inversión + hairlines.
-       ═══════════════════════════════════════════════════════════ */
-    body {
-      background: var(--surface-canvas);
-      color: var(--color-bone-white);
-      font-family: var(--font-mono);
-      font-size: var(--text-body-sm);
+    html, body {
+      background: var(--color-canvas-mist);
+      color: var(--color-ink-black);
+      font-family: var(--font-te-20);
+      font-weight: var(--weight-thin);
+      font-size: var(--text-caption);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
+      text-rendering: optimizeLegibility;
     }
+
+    a { color: var(--color-link-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
     /* ═══════════════════════════════════════════════════════════
-       📰 TICKER BAR — full-bleed, 1px, scroll horizontal
+       🔝 TOP NAV BAR — 66px tall, hairline bottom
        ═══════════════════════════════════════════════════════════ */
-    .ticker {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 28px;
-      background: var(--surface-canvas);
-      border-bottom: 1px solid var(--color-chalk-white);
-      overflow: hidden;
-      z-index: 100;
+    .nav {
+      height: 66px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--spacing-33);
+      border-bottom: 1px solid var(--color-steel-gray);
+      max-width: 100%;
+      background: var(--color-canvas-mist);
     }
 
-    .ticker__track {
+    .nav__wordmark {
+      font-family: var(--font-te-20);
+      font-weight: var(--weight-light);
+      font-size: var(--text-heading-sm);
+      letter-spacing: 0.01em;
+      color: var(--color-ink-black);
+    }
+
+    .nav__right {
       display: flex;
-      gap: var(--spacing-20);
-      white-space: nowrap;
-      animation: ticker-scroll 40s linear infinite;
-      font-size: var(--text-caption);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-bone-white);
-      padding-left: var(--spacing-20);
-    }
-
-    .ticker__track span {
-      display: inline-flex;
       align-items: center;
-      gap: var(--spacing-20);
+      gap: var(--spacing-15);
     }
 
-    /* Triangle marker separator */
-    .ticker__track span::after {
-      content: '';
-      width: 0;
-      height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 7px solid var(--color-ember-orange);
-      display: inline-block;
-    }
-
-    .ticker__track span:last-child::after { display: none; }
-
-    @keyframes ticker-scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       📌 SIDEBAR — fixed-left, ~220px, navegación como tags
-       ═══════════════════════════════════════════════════════════ */
-    .sidebar {
-      position: fixed;
-      top: 28px;
-      left: 0;
-      bottom: 0;
-      width: var(--sidebar-width);
-      background: var(--surface-canvas);
-      border-right: 1px solid var(--color-chalk-white);
-      padding: var(--spacing-24) var(--spacing-20);
+    /* Item de nav con icono cuadrado + label */
+    .nav__item {
       display: flex;
       flex-direction: column;
-      gap: var(--spacing-24);
-      overflow-y: auto;
-      z-index: 50;
-    }
-
-    /* Logo mark — 2 líneas, display, ember orange */
-    .logo {
-      font-family: var(--font-display);
-      font-size: 22px;
-      line-height: 0.95;
-      color: var(--color-ember-orange);
-      text-transform: uppercase;
-      letter-spacing: -0.01em;
-      margin-bottom: var(--spacing-8);
-    }
-
-    /* Section header con L-bracket marker */
-    .sidebar__group-label {
-      font-family: var(--font-mono);
+      align-items: center;
+      gap: 3px;
+      font-weight: var(--weight-thin);
       font-size: var(--text-caption);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-bone-white);
-      margin-bottom: var(--spacing-8);
+      color: var(--color-ink-black);
+      text-decoration: none;
+      line-height: 1.1;
+    }
+
+    .nav__item:hover { text-decoration: none; }
+    .nav__item:hover .nav__label { text-decoration: underline; }
+
+    /* Icono hairline geométrico — solo borde, sin fills */
+    .nav__icon {
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--color-ink-black);
       display: flex;
       align-items: center;
-      gap: var(--spacing-8);
+      justify-content: center;
+      position: relative;
     }
 
-    .sidebar__group-label::before {
+    /* Variantes geométricas internas del icono */
+    .nav__icon::before {
       content: '';
+      display: block;
       width: 8px;
       height: 8px;
-      border-left: 1px solid var(--color-bone-white);
-      border-bottom: 1px solid var(--color-bone-white);
-      display: inline-block;
+      border: 1px solid var(--color-ink-black);
     }
 
-    .sidebar__nav {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-4);
+    .nav__icon--square::before {
+      width: 10px;
+      height: 10px;
+      border: 1px solid var(--color-ink-black);
+      background: transparent;
     }
 
-    /* Tag nav item — inverted surface fill */
-    .tag {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--spacing-8);
-      padding: 6px 10px;
-      background: var(--surface-inverted);
-      color: var(--surface-canvas);
-      border-radius: var(--radius-sm);
-      font-family: var(--font-mono);
-      font-size: var(--text-caption);
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      transition: opacity 0.1s ease;
+    .nav__icon--cross::before,
+    .nav__icon--cross::after {
+      content: '';
+      position: absolute;
+      background: var(--color-ink-black);
     }
 
-    .tag:hover {
-      opacity: 0.8;
+    .nav__icon--cross::before {
+      width: 1px;
+      height: 12px;
+      top: 3px;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
-    .tag__count {
-      font-size: 10px;
-      color: var(--color-ash);
+    .nav__icon--cross::after {
+      width: 12px;
+      height: 1px;
+      top: 50%;
+      left: 3px;
+      transform: translateY(-50%);
     }
 
-    /* Sidebar footer */
-    .sidebar__footer {
-      margin-top: auto;
-      padding-top: var(--spacing-20);
-      border-top: 1px solid var(--color-soot);
-      font-size: var(--text-caption);
-      color: var(--color-ash);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-8);
+    .nav__icon--cross::before,
+    .nav__icon--cross::after { border: none; }
+
+    .nav__icon--dot::before {
+      width: 4px;
+      height: 4px;
+      background: var(--color-ink-black);
+      border: none;
     }
 
-    .sidebar__footer a {
-      color: var(--color-ash);
-      text-decoration: none;
-    }
-
-    .sidebar__footer a:hover {
-      color: var(--color-ember-orange);
+    .nav__icon--diag::before {
+      width: 10px;
+      height: 1px;
+      background: var(--color-ink-black);
+      border: none;
+      transform: rotate(-45deg);
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🖥️ MAIN — offset por sidebar, left-aligned
-       ═══════════════════════════════════════════════════════════ */
-    .main {
-      margin-left: var(--sidebar-width);
-      margin-top: 28px;
-      max-width: calc(var(--page-max-width) - var(--sidebar-width));
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🎭 HERO — massive specimen + body copy footnote
+       ⬛ HERO BAND — full-bleed Carbon #0f0e12
+       El único "elevation device" del sistema.
        ═══════════════════════════════════════════════════════════ */
     .hero {
-      padding: var(--spacing-100) var(--spacing-24) var(--spacing-24);
-      border-bottom: 1px solid var(--color-chalk-white);
-    }
-
-    .hero .metadata {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: var(--spacing-12);
-      font-family: var(--font-mono);
-      font-size: var(--text-caption);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-bone-white);
-      margin-bottom: var(--spacing-24);
-    }
-
-    .hero .metadata .meta-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hero .metadata .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--color-ember-orange);
-      display: inline-block;
-    }
-
-    .hero h1 {
-      font-family: var(--font-display);
-      font-weight: 400;
-      font-size: clamp(3.5rem, 12vw, 180px);
-      line-height: 0.95;
-      letter-spacing: 0.01em;
-      color: var(--color-bone-white);
-      text-transform: uppercase;
-      margin-bottom: var(--spacing-24);
-    }
-
-    /* Orange accent word — only as text accent, never fill */
-    .hero h1 .accent {
-      color: var(--color-ember-orange);
-    }
-
-    .hero .body-copy {
-      font-family: var(--font-inter);
-      font-size: var(--text-body-sm);
-      line-height: 1.5;
-      color: var(--color-bone-white);
-      max-width: 50ch;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🔤 SPECIMEN CARDS — cada app es una bandeja full-width
-       Con metadata strip arriba + display specimen gigante
-       ═══════════════════════════════════════════════════════════ */
-    .specimen {
-      border-bottom: 1px solid var(--color-chalk-white);
-      padding: 0;
-    }
-
-    /* Metadata strip — barra utility superior del specimen */
-    .specimen__strip {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: var(--spacing-12);
-      padding: var(--spacing-12) var(--spacing-24);
-      border-bottom: 1px solid var(--color-chalk-white);
-      font-family: var(--font-mono);
-      font-size: var(--text-caption);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-bone-white);
-    }
-
-    .specimen__strip-left {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-12);
-    }
-
-    .specimen__index {
-      color: var(--color-ember-orange);
-      font-weight: 700;
-    }
-
-    .specimen__stats {
-      display: flex;
-      gap: var(--spacing-12);
-      color: var(--color-ash);
-    }
-
-    .specimen__strip-actions {
-      display: flex;
-      gap: var(--spacing-8);
-    }
-
-    /* Specimen body — display name + action buttons */
-    .specimen__body {
-      padding: var(--spacing-24) var(--spacing-24) var(--spacing-24);
+      background: var(--color-carbon);
+      color: var(--color-canvas-mist);
+      padding: var(--spacing-66) var(--spacing-33);
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: end;
-      gap: var(--spacing-24);
+      gap: var(--spacing-33);
+      min-height: 300px;
     }
 
-    .specimen__name {
-      font-family: var(--font-display);
-      font-weight: 400;
-      font-size: clamp(3rem, 10vw, 140px);
-      line-height: 0.95;
-      letter-spacing: 0.01em;
-      color: var(--color-bone-white);
+    .hero__label {
+      font-weight: var(--weight-thin);
+      font-size: var(--text-caption);
+      color: var(--color-graphite);
       text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--spacing-22);
+    }
+
+    .hero__title {
+      font-family: var(--font-te-40);
+      font-weight: var(--weight-light);
+      font-size: var(--text-heading-lg);
+      line-height: 1.11;
+      color: var(--color-canvas-mist);
+      max-width: 20ch;
+    }
+
+    .hero__meta {
+      font-weight: var(--weight-thin);
+      font-size: var(--text-caption);
+      color: var(--color-graphite);
+      text-align: right;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       📋 CATALOGUE GRID — 3 columnas con hairlines verticales
+       Cada app es una "specimen cell" — sin padding, sin card.
+       ═══════════════════════════════════════════════════════════ */
+    .catalogue {
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: var(--spacing-66) var(--spacing-33);
+    }
+
+    .catalogue__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: var(--spacing-22);
+      border-bottom: 1px solid var(--color-ink-black);
+      margin-bottom: var(--spacing-22);
+      font-weight: var(--weight-thin);
+      font-size: var(--text-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .catalogue__header span:last-child {
+      color: var(--color-graphite);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       📦 SPECIMEN CELL — cada app como producto de catálogo
+       Sin padding, sin borde, sin radio. La "foto" es la tipografía.
+       Vertical hairline en el borde derecho.
+       ═══════════════════════════════════════════════════════════ */
+    .cell {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--color-steel-gray);
+      border-bottom: 1px solid var(--color-steel-gray);
+      padding: 0;
+      text-decoration: none;
+      color: var(--color-ink-black);
+      transition: background-color 0.15s ease;
+      min-height: 260px;
+    }
+
+    /* Sin borde derecho en la última columna */
+    .cell:nth-child(3n) { border-right: none; }
+
+    .cell:hover {
+      background: #ffffff;
+      text-decoration: none;
+    }
+
+    .cell:hover .cell__name { text-decoration: underline; }
+
+    /* Bloque superior — el "producto" es el nombre tipográfico
+       Ocupa la mayor parte de la celda como si fuera foto de estudio */
+    .cell__stage {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-33) var(--spacing-22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Nombre de la app — tipografía como objeto de catálogo */
+    .cell__name {
+      font-family: var(--font-te-40);
+      font-weight: var(--weight-light);
+      font-size: 32px;
+      line-height: 1.11;
+      color: var(--color-ink-black);
+      text-align: center;
+      letter-spacing: -0.01em;
+      max-width: 100%;
       word-break: break-word;
     }
 
-    .specimen__desc {
-      grid-column: 1 / -1;
-      font-family: var(--font-inter);
-      font-size: var(--text-body-sm);
-      line-height: 1.5;
-      color: var(--color-bone-white);
-      max-width: 55ch;
-      margin-top: var(--spacing-8);
+    /* Numeración tipo catálogo — esquina superior izquierda */
+    .cell__index {
+      position: absolute;
+      top: var(--spacing-22);
+      left: var(--spacing-22);
+      font-weight: var(--weight-thin);
+      font-size: 11px;
+      color: var(--color-graphite);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
-    .specimen__actions {
+    /* Icono geométrico hairline — esquina superior derecha */
+    .cell__glyph {
+      position: absolute;
+      top: var(--spacing-22);
+      right: var(--spacing-22);
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--color-ink-black);
       display: flex;
-      gap: var(--spacing-8);
-      align-items: flex-end;
-      padding-bottom: var(--spacing-8);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🔘 BOTONES — outline puro, sin fill, radius 2.8px
-       3 variantes: outlined orange (primary), ghost white (secondary)
-       ═══════════════════════════════════════════════════════════ */
-    .btn {
-      display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 10px 15px;
-      border-radius: var(--radius-sm);
-      background: transparent;
-      font-family: var(--font-mono);
-      font-size: var(--text-caption);
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      cursor: pointer;
-      transition: background-color 0.12s ease, color 0.12s ease;
-      white-space: nowrap;
+      justify-content: center;
     }
 
-    /* Outlined orange — CTA canónico (nunca filled) */
-    .btn--orange {
-      border: 1px solid var(--color-ember-orange);
-      color: var(--color-ember-orange);
+    .cell__glyph::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--color-ink-black);
     }
 
-    .btn--orange:hover {
-      background: var(--color-ember-orange);
-      color: var(--surface-canvas);
-    }
+    /* Variantes de glyph por celda — patrón geométrico hairline */
+    .cell--a .cell__glyph::before { width: 8px; height: 1px; border: none; background: var(--color-ink-black); }
+    .cell--b .cell__glyph::before { width: 1px; height: 8px; border: none; background: var(--color-ink-black); }
+    .cell--c .cell__glyph::before { width: 4px; height: 4px; background: var(--color-ink-black); border: none; }
+    .cell--d .cell__glyph::before { width: 6px; height: 6px; border: 1px solid var(--color-ink-black); transform: rotate(45deg); }
+    .cell--e .cell__glyph::before { width: 8px; height: 8px; border: none; background: transparent; border-top: 1px solid var(--color-ink-black); border-left: 1px solid var(--color-ink-black); }
+    .cell--f .cell__glyph::before { width: 8px; height: 8px; border: none; background: transparent; border-bottom: 1px solid var(--color-ink-black); border-right: 1px solid var(--color-ink-black); }
 
-    /* Ghost white — acción secundaria */
-    .btn--ghost {
-      border: 1px solid var(--color-bone-white);
-      color: var(--color-bone-white);
-    }
-
-    .btn--ghost:hover {
-      background: var(--color-bone-white);
-      color: var(--surface-canvas);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🦶 FOOTER
-       ═══════════════════════════════════════════════════════════ */
-    .footer {
-      padding: var(--spacing-24);
-      font-family: var(--font-mono);
-      font-size: var(--text-caption);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-ash);
+    /* Bloque inferior — metadata del producto */
+    .cell__meta {
+      padding: var(--spacing-15) var(--spacing-22) var(--spacing-22);
       display: flex;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: var(--spacing-8);
+      align-items: flex-end;
+      gap: var(--spacing-15);
     }
+
+    .cell__info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .cell__category {
+      font-weight: var(--weight-thin);
+      font-size: 11px;
+      color: var(--color-graphite);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .cell__url {
+      font-weight: var(--weight-thin);
+      font-size: var(--text-caption);
+      color: var(--color-link-blue);
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    .cell:hover .cell__url { text-decoration: underline; }
+
+    /* ═══════════════════════════════════════════════════════════
+       🏷️ INVERTED SECTION LABEL — banda de metadata dark
+       ═══════════════════════════════════════════════════════════ */
+    .section-label {
+      background: var(--color-carbon);
+      color: var(--color-canvas-mist);
+      padding: var(--spacing-33);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: var(--weight-thin);
+      font-size: var(--text-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .section-label span:last-child {
+      color: var(--color-graphite);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🦶 FOOTER BLOCK — Carbon full-bleed
+       ═══════════════════════════════════════════════════════════ */
+    .footer {
+      background: var(--color-carbon);
+      color: var(--color-canvas-mist);
+      padding: var(--spacing-33);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--spacing-15);
+      font-weight: var(--weight-thin);
+      font-size: var(--text-caption);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .footer a {
+      color: var(--color-canvas-mist);
+      text-decoration: none;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+
+    .footer__links {
+      display: flex;
+      gap: var(--spacing-22);
+      flex-wrap: wrap;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ⚠️ WARNING TRIANGLE — único elemento cromático
+       Anclado abajo-izquierda, permanente.
+       ═══════════════════════════════════════════════════════════ */
+    .warning {
+      position: fixed;
+      bottom: var(--spacing-22);
+      left: var(--spacing-22);
+      width: 260px;
+      background: var(--color-canvas-mist);
+      border: 1px solid var(--color-ink-black);
+      padding: var(--spacing-15);
+      display: flex;
+      gap: var(--spacing-15);
+      align-items: flex-start;
+      z-index: 200;
+      box-shadow: none;
+    }
+
+    /* Triángulo amber — el único color cromático */
+    .warning__triangle {
+      flex-shrink: 0;
+      width: 0;
+      height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-bottom: 30px solid var(--color-warn-amber);
+      position: relative;
+    }
+
+    /* Icono "hand-stop" negro dentro del triángulo */
+    .warning__triangle::after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      background: var(--color-ink-black);
+      border-radius: 50%;
+    }
+
+    .warning__body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-8, 8px);
+      font-weight: var(--weight-thin);
+      font-size: var(--text-caption);
+      line-height: 1.4;
+      color: var(--color-ink-black);
+    }
+
+    .warning__actions {
+      display: flex;
+      gap: var(--spacing-15);
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .warning__btn {
+      font-family: var(--font-te-20);
+      font-weight: var(--weight-thin);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 0;
+      background: transparent;
+      border: none;
+      color: var(--color-ink-black);
+      cursor: pointer;
+    }
+
+    .warning__btn--filled {
+      background: var(--color-ink-black);
+      color: var(--color-canvas-mist);
+      padding: 6px 12px;
+      border: 1px solid var(--color-ink-black);
+    }
+
+    .warning__btn:hover { text-decoration: underline; }
+    .warning__btn--filled:hover { text-decoration: none; background: #222; }
 
     /* ═══════════════════════════════════════════════════════════
        📱 RESPONSIVE
        ═══════════════════════════════════════════════════════════ */
     @media (max-width: 900px) {
-      .sidebar {
-        position: relative;
-        top: 28px;
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--color-chalk-white);
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: var(--spacing-12) var(--spacing-20);
-        gap: var(--spacing-12);
-        align-items: center;
-      }
-
-      .sidebar__nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: var(--spacing-4);
-      }
-
-      .sidebar__footer {
-        margin-top: 0;
-        padding-top: 0;
-        border-top: none;
-        flex-direction: row;
-        gap: var(--spacing-12);
-      }
-
-      .main {
-        margin-left: 0;
-        margin-top: 0;
-      }
-
-      .specimen__body {
-        grid-template-columns: 1fr;
-      }
-
-      .specimen__actions {
-        padding-bottom: 0;
-      }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .cell:nth-child(3n) { border-right: 1px solid var(--color-steel-gray); }
+      .cell:nth-child(2n) { border-right: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero__meta { text-align: left; }
     }
 
-    @media (max-width: 640px) {
-      .hero { padding: var(--spacing-24) var(--spacing-20) var(--spacing-24); }
-      .specimen__strip { padding: var(--spacing-12) var(--spacing-20); }
-      .specimen__body { padding: var(--spacing-20); }
-      .hero h1 { font-size: clamp(2.5rem, 14vw, 5rem); }
-      .specimen__name { font-size: clamp(2rem, 11vw, 4rem); }
+    @media (max-width: 600px) {
+      .nav { padding: 0 var(--spacing-22); height: auto; padding-top: 15px; padding-bottom: 15px; flex-direction: column; gap: 15px; align-items: flex-start; }
+      .nav__right { gap: 12px; flex-wrap: wrap; }
+      .grid { grid-template-columns: 1fr; }
+      .cell { border-right: none; }
+      .cell:nth-child(3n) { border-right: none; }
+      .cell:nth-child(2n) { border-right: none; }
+      .catalogue { padding: var(--spacing-33) var(--spacing-22); }
+      .warning { position: relative; bottom: auto; left: auto; margin: var(--spacing-22); width: auto; }
     }
   </style>
 </head>
 <body>
 
   <!-- ═══════════════════════════════════════════════════════════
-       📰 TICKER BAR — top full-bleed, scroll horizontal
+       🔝 TOP NAV — wordmark + iconos cuadrados hairline
        ═══════════════════════════════════════════════════════════ -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker__track">
-      <span>TRANSMISIÓN ACTIVA</span>
-      <span>DEPLOYED ON VERCEL</span>
-      <span>N PROYECTOS EN VIVO</span>
-      <span>TYPE-AS-INTERFACE</span>
-      <span>BUILD // SHIP // REPEAT</span>
-      <span>TRANSMISIÓN ACTIVA</span>
-      <span>DEPLOYED ON VERCEL</span>
-      <span>N PROYECTOS EN VIVO</span>
-      <span>TYPE-AS-INTERFACE</span>
-      <span>BUILD // SHIP // REPEAT</span>
+  <nav class="nav">
+    <div class="nav__wordmark">mis repos &amp; apps</div>
+    <div class="nav__right">
+      <a href="#catalogue" class="nav__item">
+        <span class="nav__icon nav__icon--square"></span>
+        <span class="nav__label">productos</span>
+      </a>
+      <a href="#catalogue" class="nav__item">
+        <span class="nav__icon nav__icon--cross"></span>
+        <span class="nav__label">índice</span>
+      </a>
+      <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="nav__item">
+        <span class="nav__icon nav__icon--dot"></span>
+        <span class="nav__label">vercel</span>
+      </a>
+      <a href="#catalogue" class="nav__item">
+        <span class="nav__icon nav__icon--diag"></span>
+        <span class="nav__label">buscar</span>
+      </a>
     </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       ⬛ HERO BAND — Carbon #0f0e12 full-bleed
+       El único "display case" del sistema.
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div>
+      <div class="hero__label">Catalogue / 2026</div>
+      <h1 class="hero__title">
+        Un catálogo industrial<br>
+        de proyectos desplegados.
+      </h1>
+    </div>
+    <div class="hero__meta">
+      10 piezas<br>
+      todas en vivo<br>
+      vercel deployment
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       🏷️ SECTION LABEL — metadata dark
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="section-label">
+    <span>Índice completo / 10 entradas</span>
+    <span>actualizado 2026</span>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════
-       📌 SIDEBAR — fixed-left, nav como tags invertidos
+       📋 CATALOGUE GRID
        ─────────────────────────────────────────────────────────
-       📌 Para añadir una nueva app: añade un <a class="tag">
-       con href="#APP-ID" apuntando al id del specimen.
+       📌 CÓMO AÑADIR UNA NUEVA APP — copia este bloque completo:
+
+       <a href="TU_URL" target="_blank" rel="noopener noreferrer"
+          class="cell cell--a">
+         <div class="cell__stage">
+           <span class="cell__index">11</span>
+           <span class="cell__glyph"></span>
+           <span class="cell__name">Nombre<br>App</span>
+         </div>
+         <div class="cell__meta">
+           <div class="cell__info">
+             <span class="cell__category">Categoría</span>
+             <span class="cell__url">tu-url.vercel.app</span>
+           </div>
+         </div>
+       </a>
+
+       ─────────────────────────────────────────────────────────
+       🎨 VARIANTES DE GLYPH (clase .cell--a hasta .cell--f):
+         cell--a  →  línea horizontal
+         cell--b  →  línea vertical
+         cell--c  →  cuadrado relleno
+         cell--d  →  rombo (cuadrado rotado 45°)
+         cell--e  →  esquina superior-izquierda (L)
+         cell--f  →  esquina inferior-derecha (L invertida)
        ═══════════════════════════════════════════════════════════ -->
-  <aside class="sidebar">
+  <main class="catalogue" id="catalogue">
 
-    <!-- Logo mark — dos líneas, ember orange -->
-    <div class="logo">
-      Mis<br>Repos.
+    <div class="catalogue__header">
+      <span>Specimen / App</span>
+      <span>10 piezas</span>
     </div>
 
-    <div>
-      <div class="sidebar__group-label">Catálogo</div>
-      <nav class="sidebar__nav">
+    <div class="grid">
 
-        <!-- ────── TAG: App 1 ────── -->
-        <a href="#app-impostor" class="tag">
-          <span>Impostor</span>
-          <span class="tag__count">01</span>
-        </a>
+      <!-- ─────────── 01 · JUEGO IMPOSTOR ─────────── -->
+      <a href="https://juegaimpostor.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--a">
+        <div class="cell__stage">
+          <span class="cell__index">01</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Juego<br>Impostor</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Juego · Social</span>
+            <span class="cell__url">juegaimpostor.vercel.app</span>
+          </div>
+        </div>
+      </a>
 
-        <!-- ────── TAG: App 2 ────── -->
-        <a href="#app-perfume" class="tag">
-          <span>Perfume</span>
-          <span class="tag__count">02</span>
-        </a>
+      <!-- ─────────── 02 · INVENTARIO PERFUME ─────────── -->
+      <a href="https://inventarioperfume.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--b">
+        <div class="cell__stage">
+          <span class="cell__index">02</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Inventario<br>Perfume</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Gestión · Colección</span>
+            <span class="cell__url">inventarioperfume.vercel.app</span>
+          </div>
+        </div>
+      </a>
 
-        <!-- ────── TAG: App 3 ────── -->
-        <a href="#app-qr" class="tag">
-          <span>QR Gen</span>
-          <span class="tag__count">03</span>
-        </a>
+      <!-- ─────────── 03 · QR GENERATOR ─────────── -->
+      <a href="https://qr-generator-three-inky.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--c">
+        <div class="cell__stage">
+          <span class="cell__index">03</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">QR<br>Generator</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Herramienta · Utilidad</span>
+            <span class="cell__url">qr-generator-three-inky.vercel.app</span>
+          </div>
+        </div>
+      </a>
 
-        <!-- ────── PLANTILLA — descomenta para usar ──────
-        <a href="#app-nueva" class="tag">
-          <span>NombreCorto</span>
-          <span class="tag__count">04</span>
-        </a>
-        ─────────────────────────────────────────────── -->
+      <!-- ─────────── 04 · GUÍA AUDITORÍA VENTAS ─────────── -->
+      <a href="https://guia-auditoria-vent-set.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--d">
+        <div class="cell__stage">
+          <span class="cell__index">04</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Guía<br>Auditoría</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Guía · Negocio</span>
+            <span class="cell__url">guia-auditoria-vent-set.vercel.app</span>
+          </div>
+        </div>
+      </a>
 
-      </nav>
+      <!-- ─────────── 05 · PROBADOR DE CÓDIGO ─────────── -->
+      <a href="https://probador-de-c-digo.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--e">
+        <div class="cell__stage">
+          <span class="cell__index">05</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Probador<br>de Código</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Dev · Testing</span>
+            <span class="cell__url">probador-de-c-digo.vercel.app</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ─────────── 06 · REGISTRO DE INVENTARIO ─────────── -->
+      <a href="https://registro-de-inventario-theta.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--f">
+        <div class="cell__stage">
+          <span class="cell__index">06</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Registro<br>Inventario</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Gestión · Stock</span>
+            <span class="cell__url">registro-de-inventario-theta.vercel.app</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ─────────── 07 · FEEDBACK CENTRAL ─────────── -->
+      <a href="https://feedbackcentral.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--a">
+        <div class="cell__stage">
+          <span class="cell__index">07</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Feedback<br>Central</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Feedback · Equipos</span>
+            <span class="cell__url">feedbackcentral.vercel.app</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ─────────── 08 · AIONSER ─────────── -->
+      <a href="https://aionser.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--b">
+        <div class="cell__stage">
+          <span class="cell__index">08</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Aionser</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">App · Web</span>
+            <span class="cell__url">aionser.vercel.app</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ─────────── 09 · CLASES DE GUITARRA ─────────── -->
+      <a href="https://clasesdeguitarra.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--c">
+        <div class="cell__stage">
+          <span class="cell__index">09</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Clases de<br>Guitarra</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Educación · Música</span>
+            <span class="cell__url">clasesdeguitarra.vercel.app</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ─────────── 10 · CATÁLOGO TOP 100 ─────────── -->
+      <a href="https://catalogotop100.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--d">
+        <div class="cell__stage">
+          <span class="cell__index">10</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Catálogo<br>Top 100</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Catálogo · Ranking</span>
+            <span class="cell__url">catalogotop100.vercel.app</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ─────────── PLANTILLA — descomenta para añadir ───────────
+      <a href="https://TU-URL.vercel.app/"
+         target="_blank" rel="noopener noreferrer"
+         class="cell cell--e">
+        <div class="cell__stage">
+          <span class="cell__index">11</span>
+          <span class="cell__glyph"></span>
+          <span class="cell__name">Nombre<br>App</span>
+        </div>
+        <div class="cell__meta">
+          <div class="cell__info">
+            <span class="cell__category">Categoría · Sub</span>
+            <span class="cell__url">tu-url.vercel.app</span>
+          </div>
+        </div>
+      </a>
+      ─────────────────────────────────────────────────────────────── -->
+
     </div>
-
-    <div class="sidebar__footer">
-      <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">→ VERCEL</a>
-      <span>© 2026 // FOUNDRY</span>
-    </div>
-
-  </aside>
+  </main>
 
   <!-- ═══════════════════════════════════════════════════════════
-       🖥️ MAIN
+       🦶 FOOTER — Carbon full-bleed
        ═══════════════════════════════════════════════════════════ -->
-  <main class="main">
+  <footer class="footer">
+    <span>Mis Repos &amp; Apps · Catalogue 2026</span>
+    <div class="footer__links">
+      <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">Vercel</a>
+      <a href="#catalogue">Índice</a>
+      <a href="#">↑ Top</a>
+    </div>
+  </footer>
 
-    <!-- ─────────── HERO ─────────── -->
-    <section class="hero">
-      <div class="metadata">
-        <span class="meta-item"><span class="dot"></span> FOUNDRY / CATÁLOGO</span>
-        <span class="meta-item">03 SPECIMENS · DESPLEGADOS</span>
-        <span class="meta-item">2026 · V.1.0</span>
+  <!-- ═══════════════════════════════════════════════════════════
+       ⚠️ WARNING TRIANGLE — único elemento cromático del sistema
+       ═══════════════════════════════════════════════════════════ -->
+  <div class="warning" role="status">
+    <div class="warning__triangle" aria-hidden="true"></div>
+    <div class="warning__body">
+      <span>Este catálogo se actualiza manualmente. Añade nuevas entradas editando el HTML.</span>
+      <div class="warning__actions">
+        <button class="warning__btn" type="button">ajustes</button>
+        <button class="warning__btn warning__btn--filled" type="button">aceptar</button>
       </div>
-      <h1>
-        Repos<br>
-        <span class="accent">&amp;</span> Apps.
-      </h1>
-      <p class="body-copy">
-        Un catálogo de proyectos desplegados. Cada entrada es un specimen:
-        metadata arriba, specimen de display en medio, y dos acciones — nunca más de dos.
-        Todos los despliegues corren en Vercel.
-      </p>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         🔤 SPECIMEN CARDS — una por app
-         ─────────────────────────────────────────────────────────
-         📌 CÓMO AÑADIR UNA NUEVA APP (copia este bloque completo):
-
-         <section class="specimen" id="app-NUEVA">
-           <div class="specimen__strip">
-             <div class="specimen__strip-left">
-               <span class="specimen__index">04</span>
-               <span>NOMBRE-APP</span>
-               <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
-             </div>
-             <div class="specimen__strip-actions">
-               <span>↗ LIVE</span>
-             </div>
-           </div>
-           <div class="specimen__body">
-             <h2 class="specimen__name">Nombre<br>App</h2>
-             <div class="specimen__actions">
-               <a href="TU_URL" target="_blank" rel="noopener noreferrer" class="btn btn--orange">
-                 BUY NOW →
-               </a>
-               <a href="#" class="btn btn--ghost">EXPLORE</a>
-             </div>
-             <p class="specimen__desc">
-               Descripción breve en una o dos líneas, en sentence case.
-             </p>
-           </div>
-         </section>
-
-         📌 TAMBIÉN AÑADE UN TAG en el sidebar apuntando a #app-NUEVA.
-         ═══════════════════════════════════════════════════════════ -->
-
-    <!-- ─────────── SPECIMEN 01: JUEGO IMPOSTOR ─────────── -->
-    <section class="specimen" id="app-impostor">
-      <div class="specimen__strip">
-        <div class="specimen__strip-left">
-          <span class="specimen__index">01</span>
-          <span>JUEGO IMPOSTOR</span>
-          <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
-        </div>
-        <div class="specimen__strip-actions">
-          <span>↗ LIVE</span>
-        </div>
-      </div>
-      <div class="specimen__body">
-        <h2 class="specimen__name">Juego<br>Impostor</h2>
-        <div class="specimen__actions">
-          <a href="https://juegaimpostor.vercel.app/"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn--orange">
-            ABRIR →
-          </a>
-          <a href="https://juegaimpostor.vercel.app/"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn--ghost">
-            EXPLORE
-          </a>
-        </div>
-        <p class="specimen__desc">
-          Deducción social para grupos. Descubre al impostor antes de que sea tarde.
-        </p>
-      </div>
-    </section>
-
-    <!-- ─────────── SPECIMEN 02: INVENTARIO PERFUME ─────────── -->
-    <section class="specimen" id="app-perfume">
-      <div class="specimen__strip">
-        <div class="specimen__strip-left">
-          <span class="specimen__index">02</span>
-          <span>INVENTARIO PERFUME</span>
-          <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
-        </div>
-        <div class="specimen__strip-actions">
-          <span>↗ LIVE</span>
-        </div>
-      </div>
-      <div class="specimen__body">
-        <h2 class="specimen__name">Inventario<br>Perfume</h2>
-        <div class="specimen__actions">
-          <a href="https://inventarioperfume.vercel.app/"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn--orange">
-            ABRIR →
-          </a>
-          <a href="https://inventarioperfume.vercel.app/"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn--ghost">
-            EXPLORE
-          </a>
-        </div>
-        <p class="specimen__desc">
-          Gestión y organización de tus insumos de perfumeria. Añade, edita y filtra.
-        </p>
-      </div>
-    </section>
-
-    <!-- ─────────── SPECIMEN 03: QR GENERATOR ─────────── -->
-    <section class="specimen" id="app-qr">
-      <div class="specimen__strip">
-        <div class="specimen__strip-left">
-          <span class="specimen__index">03</span>
-          <span>QR GENERATOR</span>
-          <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
-        </div>
-        <div class="specimen__strip-actions">
-          <span>↗ LIVE</span>
-        </div>
-      </div>
-      <div class="specimen__body">
-        <h2 class="specimen__name">QR<br>Generator</h2>
-        <div class="specimen__actions">
-          <a href="https://qr-generator-three-inky.vercel.app/"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn--orange">
-            ABRIR →
-          </a>
-          <a href="https://qr-generator-three-inky.vercel.app/"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn--ghost">
-            EXPLORE
-          </a>
-        </div>
-        <p class="specimen__desc">
-          Generador de códigos QR personalizados. Rápido, limpio, descargable.
-        </p>
-      </div>
-    </section>
-
-    <!-- ─────────── PLANTILLA VACÍA — descomenta para usar ───────────
-    <section class="specimen" id="app-nueva">
-      <div class="specimen__strip">
-        <div class="specimen__strip-left">
-          <span class="specimen__index">04</span>
-          <span>NOMBRE DE LA APP</span>
-          <span class="specimen__stats">1 STYLE · 1 DEPLOY</span>
-        </div>
-        <div class="specimen__strip-actions">
-          <span>↗ LIVE</span>
-        </div>
-      </div>
-      <div class="specimen__body">
-        <h2 class="specimen__name">Nombre<br>App</h2>
-        <div class="specimen__actions">
-          <a href="https://TU-URL.vercel.app/"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn--orange">
-            ABRIR →
-          </a>
-          <a href="https://TU-URL.vercel.app/"
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn--ghost">
-            EXPLORE
-          </a>
-        </div>
-        <p class="specimen__desc">
-          Descripción breve en una o dos líneas, en sentence case.
-        </p>
-      </div>
-    </section>
-    ─────────────────────────────────────────────────────────────── -->
-
-    <!-- ─────────── FOOTER ─────────── -->
-    <footer class="footer">
-      <span>// FIN DEL CATÁLOGO</span>
-      <span>DESPLEGADO EN VERCEL · 2026</span>
-    </footer>
-
-  </main>
+    </div>
+  </div>
 
 </body>
 </html>
