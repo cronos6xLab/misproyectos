@@ -5,14 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mis Repos & Apps — Catálogo</title>
 
-  <!--
-    ═══════════════════════════════════════════════════════════════
-    🔤 FUENTES (sustitutos de Circular y Source Code Pro)
-    ═══════════════════════════════════════════════════════════════
-      Circular           → Inter (geometric humanist sans)
-      Source Code Pro    → JetBrains Mono (inline code)
-    ═══════════════════════════════════════════════════════════════
-  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -22,13 +14,11 @@
        🎯 DESIGN TOKENS — Supabase Style Reference
        ═══════════════════════════════════════════════════════════ */
     :root {
-      /* Greens */
       --color-phosphor-green: #3ecf8e;
       --color-mint-pulse: #00c573;
       --color-forest-depth: #1f4b37;
       --color-midnight-emerald: #006239;
 
-      /* Neutrals */
       --color-snow: #fafafa;
       --color-silver-mist: #b4b4b4;
       --color-smoke: #898989;
@@ -39,34 +29,24 @@
       --color-obsidian: #121212;
       --color-deep: #0d0d0d;
 
-      /* Typography */
       --font-circular: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-      /* Weights — máximo 500, NUNCA bold */
       --weight-regular: 400;
       --weight-medium: 500;
 
-      /* Tracking universal: -0.007em */
       --tracking: -0.007em;
 
-      /* Radii */
       --radius-input: 8px;
       --radius-card: 16px;
       --radius-pill: 9999px;
 
-      /* Layout */
       --page-max-width: 1200px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
-    /* ═══════════════════════════════════════════════════════════
-       ⬛ CANVAS — Obsidian #121212, única superficie de página
-       Sin gradientes. Sin sombras. Todo flat.
-       ═══════════════════════════════════════════════════════════ */
     body {
       background: var(--color-obsidian);
       color: var(--color-snow);
@@ -82,14 +62,14 @@
     a { color: inherit; text-decoration: none; }
 
     /* ═══════════════════════════════════════════════════════════
-       🔝 TOP NAV — 64px, transparente con border bottom hairline
+       🔝 TOP NAV
        ═══════════════════════════════════════════════════════════ */
     .nav {
       height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 var(--spacing-24, 24px);
+      padding: 0 24px;
       border-bottom: 1px solid var(--color-charcoal);
       background: var(--color-obsidian);
       position: sticky;
@@ -97,7 +77,6 @@
       z-index: 100;
     }
 
-    /* Logo mark — verdes + wordmark blanco */
     .nav__brand {
       display: flex;
       align-items: center;
@@ -107,7 +86,6 @@
       color: var(--color-snow);
     }
 
-    /* Mark de marca: triángulo verde estilo Supabase */
     .nav__mark {
       width: 22px;
       height: 22px;
@@ -123,7 +101,6 @@
       clip-path: polygon(50% 0%, 100% 30%, 100% 70%, 50% 100%, 0% 70%, 0% 30%);
     }
 
-    /* Nav links centrados */
     .nav__links {
       display: flex;
       gap: 24px;
@@ -131,22 +108,15 @@
       color: var(--color-silver-mist);
     }
 
-    .nav__links a {
-      transition: color 0.15s ease;
-    }
+    .nav__links a { transition: color 0.15s ease; }
+    .nav__links a:hover { color: var(--color-snow); }
 
-    .nav__links a:hover {
-      color: var(--color-snow);
-    }
-
-    /* Nav right — pill stars + ghost + green */
     .nav__right {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    /* Pill stars — Ash background */
     .pill-stars {
       display: inline-flex;
       align-items: center;
@@ -168,9 +138,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🔘 PILL BUTTONS — todo radius 9999px
-       Primary: Phosphor Green fill
-       Ghost: transparente + border slate
+       🔘 PILL BUTTONS
        ═══════════════════════════════════════════════════════════ */
     .btn {
       display: inline-flex;
@@ -183,55 +151,43 @@
       font-weight: var(--weight-medium);
       line-height: 1.43;
       letter-spacing: var(--tracking);
-      text-decoration: none;
       cursor: pointer;
       transition: background-color 0.15s ease, border-color 0.15s ease;
       white-space: nowrap;
       border: 1px solid transparent;
     }
 
-    /* Primary — verde fósforo, el único fill cromático */
     .btn--primary {
       background: var(--color-phosphor-green);
       color: #0a0a0a;
       border-color: var(--color-phosphor-green);
     }
-
     .btn--primary:hover {
       background: #35b87d;
       border-color: var(--color-forest-depth);
     }
 
-    /* Ghost — transparente con borde slate */
     .btn--ghost {
       background: transparent;
       color: var(--color-snow);
       border-color: var(--color-slate);
       font-weight: var(--weight-regular);
     }
-
     .btn--ghost:hover {
       background: rgba(255, 255, 255, 0.04);
       border-color: var(--color-graphite);
     }
 
-    /* Small variant — para tarjetas */
-    .btn--sm {
-      padding: 6px 12px;
-      font-size: 13px;
-    }
-
     /* ═══════════════════════════════════════════════════════════
-       🎭 HERO — centrado, display 72px, segunda línea verde
+       🎭 HERO
        ═══════════════════════════════════════════════════════════ */
     .hero {
       max-width: var(--page-max-width);
       margin: 0 auto;
-      padding: 96px 24px 80px;
+      padding: 80px 24px 64px;
       text-align: center;
     }
 
-    /* Announcement pill arriba del headline */
     .hero__pill {
       display: inline-flex;
       align-items: center;
@@ -242,7 +198,6 @@
       border-radius: var(--radius-pill);
       font-size: 12px;
       color: var(--color-silver-mist);
-      letter-spacing: var(--tracking);
       margin-bottom: 32px;
       line-height: 1.5;
     }
@@ -254,12 +209,8 @@
       background: var(--color-phosphor-green);
     }
 
-    .hero__pill .chev {
-      color: var(--color-smoke);
-      font-size: 12px;
-    }
+    .hero__pill .chev { color: var(--color-smoke); }
 
-    /* Display headline 72px, tracking -0.504px */
     .hero h1 {
       font-family: var(--font-circular);
       font-weight: var(--weight-regular);
@@ -270,7 +221,6 @@
       margin-bottom: 24px;
     }
 
-    /* Segunda línea en Phosphor Green */
     .hero h1 .accent {
       color: var(--color-phosphor-green);
       display: block;
@@ -279,13 +229,11 @@
     .hero__sub {
       font-size: 16px;
       line-height: 1.5;
-      letter-spacing: var(--tracking);
       color: var(--color-silver-mist);
       max-width: 560px;
       margin: 0 auto 40px;
     }
 
-    /* Botones hero */
     .hero__actions {
       display: flex;
       gap: 12px;
@@ -294,12 +242,12 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🏷️ LOGO CLOUD — tira de categorías monochrome
+       🏷️ LOGO CLOUD
        ═══════════════════════════════════════════════════════════ */
     .logo-cloud {
       max-width: var(--page-max-width);
       margin: 0 auto;
-      padding: 40px 24px 80px;
+      padding: 32px 24px 64px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -311,24 +259,23 @@
     .logo-cloud span {
       font-family: var(--font-mono);
       font-size: 12px;
-      font-weight: var(--weight-regular);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--color-smoke);
     }
 
     /* ═══════════════════════════════════════════════════════════
-       📋 SECTION HEADER
+       📋 SECTION
        ═══════════════════════════════════════════════════════════ */
     .section {
       max-width: var(--page-max-width);
       margin: 0 auto;
-      padding: 80px 24px;
+      padding: 64px 24px;
     }
 
     .section__header {
       text-align: center;
-      margin-bottom: 48px;
+      margin-bottom: 32px;
     }
 
     .section__header h2 {
@@ -350,158 +297,132 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🗂️ FEATURE GRID — 3 columnas, cards con border hairline
-       Sin shadows. Superficie = canvas + border #2e2e2e.
+       🗂️ GRID COMPACTO — 2 columnas, tarjetas horizontales
+       Cada card ~70px de alto en lugar de ~260px.
        ═══════════════════════════════════════════════════════════ */
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
 
-    /* Card base — Obsidian con border Charcoal */
+    /* Card horizontal — icon + body + cta en una fila */
     .card {
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      gap: 14px;
       background: var(--color-obsidian);
       border: 1px solid var(--color-charcoal);
-      border-radius: var(--radius-card);
-      padding: 24px;
-      transition: border-color 0.15s ease;
+      border-radius: 12px;
+      padding: 14px 16px;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
       text-decoration: none;
       color: inherit;
+      min-height: 0;
     }
 
     .card:hover {
       border-color: var(--color-graphite);
+      background: #141414;
     }
 
-    /* Icono superior — verde fósforo, línea delgada */
+    /* Icono cuadrado hairline en el lateral */
     .card__icon {
-      width: 24px;
-      height: 24px;
-      margin-bottom: 20px;
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--color-charcoal);
+      border-radius: 8px;
+      background: var(--color-deep);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--color-phosphor-green);
-      font-size: 22px;
+      font-size: 14px;
       line-height: 1;
+      transition: border-color 0.15s ease;
     }
 
-    /* Título card — Snow 18px weight 500 */
+    .card:hover .card__icon {
+      border-color: var(--color-phosphor-green);
+    }
+
+    /* Bloque central — título + descripción */
+    .card__body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .card__title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .card__title {
       font-family: var(--font-circular);
       font-weight: var(--weight-medium);
-      font-size: 18px;
-      line-height: 1.38;
+      font-size: 15px;
+      line-height: 1.3;
       letter-spacing: var(--tracking);
       color: var(--color-snow);
-      margin-bottom: 8px;
+      margin: 0;
     }
 
-    /* Descripción — Silver Mist 14px */
-    .card__desc {
-      font-size: 14px;
-      line-height: 1.5;
-      letter-spacing: var(--tracking);
-      color: var(--color-silver-mist);
-      margin-bottom: 20px;
-      flex-grow: 1;
-    }
-
-    /* Zona de "ilustración" — fondo deep con line-art */
-    .card__visual {
-      background: var(--color-deep);
-      border: 1px solid var(--color-charcoal);
-      border-radius: var(--radius-input);
-      height: 100px;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Grid de puntos decorativa — line art */
-    .card__visual::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(var(--color-graphite) 1px, transparent 1px),
-        linear-gradient(90deg, var(--color-graphite) 1px, transparent 1px);
-      background-size: 20px 20px;
-      opacity: 0.15;
-    }
-
-    /* Punto verde accent */
-    .card__visual::after {
-      content: '';
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--color-phosphor-green);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 0 6px rgba(62, 207, 142, 0.15);
-    }
-
-    /* Código mono dentro del visual */
-    .card__visual .code {
-      position: relative;
-      z-index: 2;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: var(--color-smoke);
-      background: var(--color-obsidian);
-      padding: 3px 8px;
-      border-radius: var(--radius-input);
-      border: 1px solid var(--color-charcoal);
-    }
-
-    .card__visual .code::before {
-      content: '$ ';
-      color: var(--color-phosphor-green);
-    }
-
-    /* Fila inferior con botón pill pequeño */
-    .card__footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-top: 16px;
-      border-top: 1px solid var(--color-charcoal);
-    }
-
-    /* Categoría como metadata mono */
+    /* Categoría en mono, junto al título */
     .card__category {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10px;
+      font-weight: var(--weight-regular);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--color-smoke);
+      white-space: nowrap;
     }
 
-    /* Botón pill ghost dentro de card */
+    /* Descripción — ahora en una sola línea truncada */
+    .card__desc {
+      font-size: 13px;
+      line-height: 1.4;
+      color: var(--color-silver-mist);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin: 0;
+    }
+
+    /* URL en mono — reemplaza la antigua "visual" */
+    .card__url {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      color: var(--color-graphite);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* CTA pill pequeño a la derecha */
     .card__cta {
+      flex-shrink: 0;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       padding: 6px 12px;
       border-radius: var(--radius-pill);
       background: transparent;
       border: 1px solid var(--color-slate);
       color: var(--color-snow);
+      font-family: var(--font-circular);
       font-size: 12px;
       font-weight: var(--weight-regular);
       letter-spacing: var(--tracking);
-      transition: background-color 0.15s ease, border-color 0.15s ease;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      white-space: nowrap;
     }
 
     .card:hover .card__cta {
@@ -511,46 +432,45 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🎛️ DEMO / CONTACT CARD — bloque grande con border + form-look
+       🎛️ DEMO / CONTACTO
        ═══════════════════════════════════════════════════════════ */
     .demo {
       max-width: var(--page-max-width);
       margin: 0 auto;
-      padding: 80px 24px;
+      padding: 64px 24px;
     }
 
     .demo__inner {
       background: var(--color-obsidian);
       border: 1px solid var(--color-charcoal);
       border-radius: var(--radius-card);
-      padding: 48px;
+      padding: 40px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 48px;
+      gap: 40px;
       align-items: center;
     }
 
     .demo__text h2 {
       font-family: var(--font-circular);
       font-weight: var(--weight-regular);
-      font-size: clamp(1.5rem, 3vw, 36px);
+      font-size: clamp(1.5rem, 3vw, 32px);
       line-height: 1.2;
       letter-spacing: -0.007em;
       color: var(--color-snow);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .demo__text p {
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.5;
       color: var(--color-silver-mist);
-      margin-bottom: 24px;
     }
 
     .demo__form {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .demo__input {
@@ -566,13 +486,8 @@
       transition: border-color 0.15s ease;
     }
 
-    .demo__input::placeholder {
-      color: var(--color-smoke);
-    }
-
-    .demo__input:focus {
-      border-color: var(--color-phosphor-green);
-    }
+    .demo__input::placeholder { color: var(--color-smoke); }
+    .demo__input:focus { border-color: var(--color-phosphor-green); }
 
     .demo__form .btn--primary {
       justify-content: center;
@@ -580,11 +495,11 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🦶 FOOTER — single dark band
+       🦶 FOOTER
        ═══════════════════════════════════════════════════════════ */
     .footer {
       border-top: 1px solid var(--color-charcoal);
-      padding: 40px 24px;
+      padding: 32px 24px;
       max-width: var(--page-max-width);
       margin: 0 auto;
       display: flex;
@@ -593,7 +508,6 @@
       flex-wrap: wrap;
       gap: 16px;
       font-size: 13px;
-      letter-spacing: var(--tracking);
       color: var(--color-smoke);
     }
 
@@ -608,29 +522,29 @@
       transition: color 0.15s ease;
     }
 
-    .footer__links a:hover {
-      color: var(--color-phosphor-green);
-    }
+    .footer__links a:hover { color: var(--color-phosphor-green); }
 
     /* ═══════════════════════════════════════════════════════════
        📱 RESPONSIVE
        ═══════════════════════════════════════════════════════════ */
     @media (max-width: 900px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
       .nav__links { display: none; }
-      .demo__inner { grid-template-columns: 1fr; gap: 32px; }
+      .demo__inner { grid-template-columns: 1fr; gap: 28px; }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       .grid { grid-template-columns: 1fr; }
       .nav { padding: 0 16px; }
       .nav__right .btn--ghost { display: none; }
-      .hero { padding: 64px 16px 48px; }
-      .section { padding: 64px 16px; }
-      .logo-cloud { gap: 24px; padding: 32px 16px 64px; }
-      .demo { padding: 64px 16px; }
+      .hero { padding: 56px 16px 40px; }
+      .section { padding: 48px 16px; }
+      .logo-cloud { gap: 24px; padding: 24px 16px 48px; }
+      .demo { padding: 48px 16px; }
       .demo__inner { padding: 24px; }
       .footer { flex-direction: column; align-items: flex-start; }
+
+      /* En móvil, ocultar la URL para mantener la card compacta */
+      .card__url { display: none; }
     }
   </style>
 </head>
@@ -689,7 +603,7 @@
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════
-       🏷️ LOGO CLOUD — categorías como texto mono
+       🏷️ LOGO CLOUD
        ═══════════════════════════════════════════════════════════ -->
   <div class="logo-cloud" aria-label="Categorías">
     <span>Juegos</span>
@@ -701,26 +615,25 @@
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════
-       📋 CATÁLOGO — Feature Grid 3 columnas
+       📋 CATÁLOGO COMPACTO
        ─────────────────────────────────────────────────────────
        📌 CÓMO AÑADIR UNA NUEVA APP (copia este bloque):
 
        <a href="TU_URL" target="_blank" rel="noopener noreferrer" class="card">
          <div class="card__icon">◆</div>
-         <div class="card__visual">
-           <span class="code">tu-url.vercel.app</span>
+         <div class="card__body">
+           <div class="card__title-row">
+             <h3 class="card__title">Nombre de la App</h3>
+             <span class="card__category">Categoría</span>
+           </div>
+           <p class="card__desc">Descripción breve en una sola línea.</p>
+           <span class="card__url">tu-url.vercel.app</span>
          </div>
-         <h3 class="card__title">Nombre de la App</h3>
-         <p class="card__desc">Descripción breve en sentence case.</p>
-         <div class="card__footer">
-           <span class="card__category">Categoría · 2026</span>
-           <span class="card__cta">Abrir →</span>
-         </div>
+         <span class="card__cta">Abrir →</span>
        </a>
 
        ─────────────────────────────────────────────────────────
-       🎨 ICONOS sugeridos (usar símbolos geométricos):
-         ◆  ●  ▲  ■  ◇  ○  △  □  ✦  ✧  *  +
+       🎨 ICONOS sugeridos: ◆ ● ▲ ■ ◇ ○ △ □ ✦ ✧ * +
        ═══════════════════════════════════════════════════════════ -->
   <section class="section" id="catalogo">
 
@@ -736,17 +649,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">◆</div>
-        <div class="card__visual">
-          <span class="code">juegaimpostor.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Juego Impostor</h3>
+            <span class="card__category">Juego</span>
+          </div>
+          <p class="card__desc">Deducción social para grupos.</p>
+          <span class="card__url">juegaimpostor.vercel.app</span>
         </div>
-        <h3 class="card__title">Juego Impostor</h3>
-        <p class="card__desc">
-          Deducción social para grupos. Descubre al impostor antes de que sea tarde.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Juego</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── 02 · INVENTARIO PERFUME ─────────── -->
@@ -754,17 +665,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">●</div>
-        <div class="card__visual">
-          <span class="code">inventarioperfume.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Inventario Perfume</h3>
+            <span class="card__category">Gestión</span>
+          </div>
+          <p class="card__desc">Colección de perfumes organizada.</p>
+          <span class="card__url">inventarioperfume.vercel.app</span>
         </div>
-        <h3 class="card__title">Inventario Perfume</h3>
-        <p class="card__desc">
-          Gestión y organización de tu colección de perfumes. Añade, edita y filtra.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Gestión</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── 03 · QR GENERATOR ─────────── -->
@@ -772,17 +681,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">■</div>
-        <div class="card__visual">
-          <span class="code">qr-generator.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">QR Generator</h3>
+            <span class="card__category">Herramienta</span>
+          </div>
+          <p class="card__desc">Códigos QR personalizados y descargables.</p>
+          <span class="card__url">qr-generator-three-inky.vercel.app</span>
         </div>
-        <h3 class="card__title">QR Generator</h3>
-        <p class="card__desc">
-          Generador de códigos QR personalizados. Rápido, limpio, descargable.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Herramienta</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── 04 · GUÍA AUDITORÍA ─────────── -->
@@ -790,17 +697,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">▲</div>
-        <div class="card__visual">
-          <span class="code">guia-auditoria.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Guía Auditoría</h3>
+            <span class="card__category">Guía</span>
+          </div>
+          <p class="card__desc">Auditoría del proceso de ventas.</p>
+          <span class="card__url">guia-auditoria-vent-set.vercel.app</span>
         </div>
-        <h3 class="card__title">Guía Auditoría</h3>
-        <p class="card__desc">
-          Guía práctica para auditar el proceso de ventas de un equipo comercial.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Guía</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── 05 · PROBADOR DE CÓDIGO ─────────── -->
@@ -808,17 +713,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">◇</div>
-        <div class="card__visual">
-          <span class="code">probador-de-codigo.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Probador de Código</h3>
+            <span class="card__category">Devtools</span>
+          </div>
+          <p class="card__desc">Prueba fragmentos en el navegador.</p>
+          <span class="card__url">probador-de-c-digo.vercel.app</span>
         </div>
-        <h3 class="card__title">Probador de Código</h3>
-        <p class="card__desc">
-          Entorno para probar fragmentos de código directamente en el navegador.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Devtools</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── 06 · REGISTRO DE INVENTARIO ─────────── -->
@@ -826,17 +729,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">○</div>
-        <div class="card__visual">
-          <span class="code">registro-inventario.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Registro Inventario</h3>
+            <span class="card__category">Gestión</span>
+          </div>
+          <p class="card__desc">Control de stock y entradas.</p>
+          <span class="card__url">registro-de-inventario-theta.vercel.app</span>
         </div>
-        <h3 class="card__title">Registro Inventario</h3>
-        <p class="card__desc">
-          Registro y seguimiento de inventario con control de stock y entradas.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Gestión</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── 07 · FEEDBACK CENTRAL ─────────── -->
@@ -844,17 +745,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">△</div>
-        <div class="card__visual">
-          <span class="code">feedbackcentral.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Feedback Central</h3>
+            <span class="card__category">Equipos</span>
+          </div>
+          <p class="card__desc">Recibe y organiza feedback de equipos.</p>
+          <span class="card__url">feedbackcentral.vercel.app</span>
         </div>
-        <h3 class="card__title">Feedback Central</h3>
-        <p class="card__desc">
-          Plataforma centralizada para recibir, organizar y responder feedback de equipos.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Equipos</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── 08 · AIONSER ─────────── -->
@@ -862,17 +761,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">□</div>
-        <div class="card__visual">
-          <span class="code">aionser.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Aionser</h3>
+            <span class="card__category">App</span>
+          </div>
+          <p class="card__desc">Aplicación web experimental.</p>
+          <span class="card__url">aionser.vercel.app</span>
         </div>
-        <h3 class="card__title">Aionser</h3>
-        <p class="card__desc">
-          Aplicación web experimental. Explora la interfaz y descubre su función.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">App</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── 09 · CLASES DE GUITARRA ─────────── -->
@@ -880,17 +777,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">✦</div>
-        <div class="card__visual">
-          <span class="code">clasesdeguitarra.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Clases de Guitarra</h3>
+            <span class="card__category">Educación</span>
+          </div>
+          <p class="card__desc">Lecciones y ejercicios paso a paso.</p>
+          <span class="card__url">clasesdeguitarra.vercel.app</span>
         </div>
-        <h3 class="card__title">Clases de Guitarra</h3>
-        <p class="card__desc">
-          Recurso educativo para aprender guitarra paso a paso, con lecciones y ejercicios.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Educación</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── 10 · CATÁLOGO TOP 100 ─────────── -->
@@ -898,17 +793,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">✧</div>
-        <div class="card__visual">
-          <span class="code">catalogotop100.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Catálogo Top 100</h3>
+            <span class="card__category">Catálogo</span>
+          </div>
+          <p class="card__desc">Las 100 entradas mejor rankeadas.</p>
+          <span class="card__url">catalogotop100.vercel.app</span>
         </div>
-        <h3 class="card__title">Catálogo Top 100</h3>
-        <p class="card__desc">
-          Catálogo con las 100 entradas mejor rankeadas. Filtra, ordena y explora.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Catálogo</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
 
       <!-- ─────────── PLANTILLA — descomenta para añadir ───────────
@@ -916,17 +809,15 @@
          target="_blank" rel="noopener noreferrer"
          class="card">
         <div class="card__icon">◆</div>
-        <div class="card__visual">
-          <span class="code">tu-url.vercel.app</span>
+        <div class="card__body">
+          <div class="card__title-row">
+            <h3 class="card__title">Nombre de la App</h3>
+            <span class="card__category">Categoría</span>
+          </div>
+          <p class="card__desc">Descripción breve en una sola línea.</p>
+          <span class="card__url">tu-url.vercel.app</span>
         </div>
-        <h3 class="card__title">Nombre de la App</h3>
-        <p class="card__desc">
-          Descripción breve en una o dos líneas, en sentence case.
-        </p>
-        <div class="card__footer">
-          <span class="card__category">Categoría</span>
-          <span class="card__cta">Abrir →</span>
-        </div>
+        <span class="card__cta">Abrir →</span>
       </a>
       ─────────────────────────────────────────────────────────────── -->
 
@@ -942,7 +833,8 @@
         <h2>¿Cómo añadir nuevas apps?</h2>
         <p>
           Copia el bloque de plantilla comentado dentro del HTML, cambia la URL
-          y el título. Cada tarjeta es un solo elemento <code style="font-family: var(--font-mono); color: var(--color-phosphor-green); font-size: 13px;">&lt;a&gt;</code>.
+          y el título. Cada tarjeta es un solo elemento
+          <code style="font-family: var(--font-mono); color: var(--color-phosphor-green); font-size: 13px;">&lt;a&gt;</code>.
         </p>
       </div>
       <form class="demo__form" onsubmit="event.preventDefault();">
