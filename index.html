@@ -3,700 +3,749 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Repos & Apps — Broadsheet Portfolio</title>
+  <title>Mis Repos & Apps — Catálogo</title>
 
   <!--
     ═══════════════════════════════════════════════════════════════
-    🔤 FUENTES (sustitutos de Canopee / Editorial New / Domaine / Germgoth)
+    🔤 FUENTES (sustitutos de Circular y Source Code Pro)
     ═══════════════════════════════════════════════════════════════
-      Canopee           → Bodoni Moda (display serif, weight 900)
-      Editorial New     → Source Serif 4 (body serif)
-      Domaine Display   → Playfair Display (mid display)
-      Germgoth          → Pirata One (blackletter accent)
+      Circular           → Inter (geometric humanist sans)
+      Source Code Pro    → JetBrains Mono (inline code)
     ═══════════════════════════════════════════════════════════════
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,700;6..96,900&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400&family=Playfair+Display:wght@500;700&family=Pirata+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 
   <style>
     /* ═══════════════════════════════════════════════════════════
-       🎯 DESIGN TOKENS — Miranda Style Reference
+       🎯 DESIGN TOKENS — Supabase Style Reference
        ═══════════════════════════════════════════════════════════ */
     :root {
-      /* Colors */
-      --color-parchment: #e2dedb;
-      --color-bone-cream: #cdc6be;
-      --color-ink-black: #1d1d1b;
-      --color-charcoal: #69645f;
-      --color-pure-black: #000000;
-      --color-ember-orange: #c03f13;
+      /* Greens */
+      --color-phosphor-green: #3ecf8e;
+      --color-mint-pulse: #00c573;
+      --color-forest-depth: #1f4b37;
+      --color-midnight-emerald: #006239;
+
+      /* Neutrals */
+      --color-snow: #fafafa;
+      --color-silver-mist: #b4b4b4;
+      --color-smoke: #898989;
+      --color-graphite: #4d4d4d;
+      --color-slate: #393939;
+      --color-charcoal: #2e2e2e;
+      --color-ash: #242424;
+      --color-obsidian: #121212;
+      --color-deep: #0d0d0d;
 
       /* Typography */
-      --font-canopee: 'Bodoni Moda', 'Playfair Display', serif;
-      --font-editorial: 'Source Serif 4', Georgia, serif;
-      --font-domaine: 'Playfair Display', Georgia, serif;
-      --font-germgoth: 'Pirata One', serif;
+      --font-circular: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-      /* Type Scale */
-      --text-caption: 14px;
-      --text-body-sm: 16px;
-      --text-subheading: 22px;
-      --text-heading-sm: 32px;
+      /* Weights — máximo 500, NUNCA bold */
+      --weight-regular: 400;
+      --weight-medium: 500;
 
-      /* Spacing */
-      --spacing-7: 7px;
-      --spacing-10: 10px;
-      --spacing-12: 12px;
-      --spacing-14: 14px;
-      --spacing-17: 17px;
-      --spacing-22: 22px;
-      --spacing-28: 28px;
-      --spacing-36: 36px;
-      --spacing-43: 43px;
-      --spacing-58: 58px;
-      --spacing-65: 65px;
+      /* Tracking universal: -0.007em */
+      --tracking: -0.007em;
 
       /* Radii */
-      --radius-tag: 2.88px;
-      --radius-card: 11.52px;
-
-      /* Shadows */
-      --shadow-card: rgba(29, 29, 27, 0.2) -4px 4px 6px 0px;
-      --shadow-portrait: rgba(29, 29, 27, 0.2) -5px 3px 6px 0px;
+      --radius-input: 8px;
+      --radius-card: 16px;
+      --radius-pill: 9999px;
 
       /* Layout */
-      --page-max-width: 1440px;
+      --page-max-width: 1200px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html { scroll-behavior: smooth; }
 
+    /* ═══════════════════════════════════════════════════════════
+       ⬛ CANVAS — Obsidian #121212, única superficie de página
+       Sin gradientes. Sin sombras. Todo flat.
+       ═══════════════════════════════════════════════════════════ */
     body {
-      background: var(--color-parchment);
-      color: var(--color-ink-black);
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: var(--text-body-sm);
-      line-height: 1.27;
+      background: var(--color-obsidian);
+      color: var(--color-snow);
+      font-family: var(--font-circular);
+      font-weight: var(--weight-regular);
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: var(--tracking);
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      min-height: 100vh;
     }
 
     a { color: inherit; text-decoration: none; }
 
     /* ═══════════════════════════════════════════════════════════
-       📰 EDITORIAL HEADER BAR — location · brand · hamburger
+       🔝 TOP NAV — 64px, transparente con border bottom hairline
        ═══════════════════════════════════════════════════════════ */
-    .header-bar {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+    .nav {
+      height: 64px;
+      display: flex;
       align-items: center;
-      padding: var(--spacing-17) var(--spacing-43);
-      border-bottom: 1px solid var(--color-ink-black);
-      background: var(--color-parchment);
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: 17px;
-      letter-spacing: -0.01em;
-    }
-
-    .header-bar__location {
-      text-align: left;
-      color: var(--color-ink-black);
-    }
-
-    .header-bar__brand {
-      text-align: center;
-      font-size: 19px;
-      font-style: italic;
-    }
-
-    .header-bar__menu {
-      justify-self: end;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      width: 26px;
-      cursor: pointer;
-    }
-
-    .header-bar__menu span {
-      display: block;
-      height: 1px;
-      background: var(--color-ink-black);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       ⬛ DISPLAY BANNER — Ink Black full-bleed + Canopee oversize
-       El patrón más reconocible del sistema.
-       ═══════════════════════════════════════════════════════════ */
-    .banner {
-      background: var(--color-ink-black);
-      color: var(--color-parchment);
-      overflow: hidden;
-      padding: 0;
-      position: relative;
-    }
-
-    .banner__inner {
-      max-width: var(--page-max-width);
-      margin: 0 auto;
-      padding: var(--spacing-36) var(--spacing-43) var(--spacing-28);
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    /* Título tipo masthead de periódico */
-    .banner__title {
-      font-family: var(--font-canopee);
-      font-weight: 900;
-      font-size: clamp(3.5rem, 18vw, 400px);
-      line-height: 0.73;
-      letter-spacing: -0.055em;
-      text-align: center;
-      text-transform: uppercase;
-      color: var(--color-parchment);
-      white-space: nowrap;
-    }
-
-    /* Sub-row de metadata del banner */
-    .banner__meta {
-      display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      gap: var(--spacing-22);
-      margin-top: var(--spacing-22);
-      padding-top: var(--spacing-17);
-      border-top: 1px solid var(--color-parchment);
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: var(--text-caption);
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
+      padding: 0 var(--spacing-24, 24px);
+      border-bottom: 1px solid var(--color-charcoal);
+      background: var(--color-obsidian);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .banner__meta-item {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-7);
-    }
-
-    /* Asterisco decorativo ember */
-    .banner__meta-item .star {
-      color: var(--color-ember-orange);
-      font-size: 18px;
-      line-height: 1;
-    }
-
-    /* Segunda línea del banner — subtítulo editorial */
-    .banner__sub {
-      font-family: var(--font-domaine);
-      font-weight: 500;
-      font-size: clamp(1.5rem, 3.5vw, 3.25rem);
-      line-height: 0.91;
-      letter-spacing: -0.03em;
-      color: var(--color-parchment);
-      margin-top: var(--spacing-17);
-      font-style: italic;
-      text-align: center;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🎩 DROP CAP BIO BLOCK — intro editorial
-       ═══════════════════════════════════════════════════════════ */
-    .bio {
-      max-width: var(--page-max-width);
-      margin: 0 auto;
-      padding: var(--spacing-58) var(--spacing-43) var(--spacing-43);
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: var(--spacing-58);
-      align-items: start;
-    }
-
-    .bio__body {
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: 17px;
-      line-height: 1.5;
-      letter-spacing: -0.01em;
-      color: var(--color-ink-black);
-    }
-
-    /* Drop cap gigante en Canopee */
-    .bio__body::first-letter {
-      font-family: var(--font-canopee);
-      font-weight: 900;
-      font-size: 5.5em;
-      line-height: 0.72;
-      float: left;
-      margin: 0.05em 0.1em 0 0;
-      color: var(--color-ink-black);
-      letter-spacing: -0.05em;
-    }
-
-    .bio__body p {
-      margin-bottom: var(--spacing-17);
-    }
-
-    .bio__headline {
-      font-family: var(--font-canopee);
-      font-weight: 900;
-      font-size: clamp(2rem, 5vw, 4.5rem);
-      line-height: 0.85;
-      letter-spacing: -0.045em;
-      text-transform: uppercase;
-      color: var(--color-ink-black);
-    }
-
-    .bio__headline .italic {
-      font-family: var(--font-domaine);
-      font-style: italic;
-      font-weight: 500;
-      text-transform: none;
-    }
-
-    .bio__seal {
-      margin-top: var(--spacing-43);
+    /* Logo mark — verdes + wordmark blanco */
+    .nav__brand {
       display: flex;
       align-items: center;
-      gap: var(--spacing-17);
-      font-family: var(--font-editorial);
-      font-size: var(--text-caption);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--color-charcoal);
+      gap: 10px;
+      font-size: 14px;
+      font-weight: var(--weight-medium);
+      color: var(--color-snow);
     }
 
-    /* Stamp seal ilustración */
-    .stamp {
-      width: 90px;
-      height: 90px;
-      border-radius: var(--radius-card);
-      background: var(--color-bone-cream);
-      border: 1px dashed var(--color-ink-black);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Mark de marca: triángulo verde estilo Supabase */
+    .nav__mark {
+      width: 22px;
+      height: 22px;
       position: relative;
-      padding: var(--spacing-12);
+      display: inline-block;
     }
 
-    /* Sunburst ember dentro del stamp */
-    .stamp::before {
+    .nav__mark::before {
       content: '';
       position: absolute;
-      width: 38px;
-      height: 38px;
-      background: var(--color-ember-orange);
-      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      inset: 0;
+      background: var(--color-phosphor-green);
+      clip-path: polygon(50% 0%, 100% 30%, 100% 70%, 50% 100%, 0% 70%, 0% 30%);
+    }
+
+    /* Nav links centrados */
+    .nav__links {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      color: var(--color-silver-mist);
+    }
+
+    .nav__links a {
+      transition: color 0.15s ease;
+    }
+
+    .nav__links a:hover {
+      color: var(--color-snow);
+    }
+
+    /* Nav right — pill stars + ghost + green */
+    .nav__right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Pill stars — Ash background */
+    .pill-stars {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: var(--color-ash);
+      border: 1px solid var(--color-charcoal);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      color: var(--color-snow);
+      line-height: 1.4;
+    }
+
+    .pill-stars__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-phosphor-green);
     }
 
     /* ═══════════════════════════════════════════════════════════
-       📋 SECTION HEADER — three-column intro
+       🔘 PILL BUTTONS — todo radius 9999px
+       Primary: Phosphor Green fill
+       Ghost: transparente + border slate
        ═══════════════════════════════════════════════════════════ */
-    .section-header {
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-circular);
+      font-size: 14px;
+      font-weight: var(--weight-medium);
+      line-height: 1.43;
+      letter-spacing: var(--tracking);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+
+    /* Primary — verde fósforo, el único fill cromático */
+    .btn--primary {
+      background: var(--color-phosphor-green);
+      color: #0a0a0a;
+      border-color: var(--color-phosphor-green);
+    }
+
+    .btn--primary:hover {
+      background: #35b87d;
+      border-color: var(--color-forest-depth);
+    }
+
+    /* Ghost — transparente con borde slate */
+    .btn--ghost {
+      background: transparent;
+      color: var(--color-snow);
+      border-color: var(--color-slate);
+      font-weight: var(--weight-regular);
+    }
+
+    .btn--ghost:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--color-graphite);
+    }
+
+    /* Small variant — para tarjetas */
+    .btn--sm {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🎭 HERO — centrado, display 72px, segunda línea verde
+       ═══════════════════════════════════════════════════════════ */
+    .hero {
       max-width: var(--page-max-width);
       margin: 0 auto;
-      padding: var(--spacing-43) var(--spacing-43) var(--spacing-22);
-      display: grid;
-      grid-template-columns: 1fr 2fr 1fr;
-      gap: var(--spacing-43);
-      align-items: end;
-      border-bottom: 1px solid var(--color-ink-black);
-    }
-
-    .section-header__left,
-    .section-header__right {
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: var(--text-caption);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--color-charcoal);
-    }
-
-    .section-header__right {
-      text-align: right;
-    }
-
-    .section-header__center {
+      padding: 96px 24px 80px;
       text-align: center;
     }
 
-    .section-header__center h2 {
-      font-family: var(--font-canopee);
-      font-weight: 900;
-      font-size: clamp(2.5rem, 5.5vw, 5rem);
-      line-height: 0.85;
-      letter-spacing: -0.05em;
-      text-transform: uppercase;
-      color: var(--color-ink-black);
-    }
-
-    .section-header__center .deck {
-      margin-top: var(--spacing-14);
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-style: italic;
-      font-size: var(--text-body-sm);
-      color: var(--color-charcoal);
-      letter-spacing: -0.01em;
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       🗂️ PROJECT GRID — 3 columnas, cards sobre Bone Cream
-       Sin bordes, separación por whitespace + shadow direccional.
-       ═══════════════════════════════════════════════════════════ */
-    .grid-section {
-      max-width: var(--page-max-width);
-      margin: 0 auto;
-      padding: var(--spacing-43) var(--spacing-43) var(--spacing-65);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--spacing-43);
-    }
-
-    /* Card individual — Bone Cream, sin borde, con shadow direccional */
-    .card {
-      display: flex;
-      flex-direction: column;
-      background: var(--color-bone-cream);
-      padding: var(--spacing-22);
-      box-shadow: var(--shadow-card);
-      transition: transform 0.2s ease;
-      text-decoration: none;
-      color: var(--color-ink-black);
-    }
-
-    .card:hover {
-      transform: translate(-2px, 2px);
-    }
-
-    /* Bloque superior — specimen tipográfico (thumbnail sin imagen) */
-    .card__thumb {
-      aspect-ratio: 4 / 3;
-      background: var(--color-parchment);
-      border-radius: 0;
-      display: flex;
+    /* Announcement pill arriba del headline */
+    .hero__pill {
+      display: inline-flex;
       align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--color-ash);
+      border: 1px solid var(--color-charcoal);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      color: var(--color-silver-mist);
+      letter-spacing: var(--tracking);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .hero__pill .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-phosphor-green);
+    }
+
+    .hero__pill .chev {
+      color: var(--color-smoke);
+      font-size: 12px;
+    }
+
+    /* Display headline 72px, tracking -0.504px */
+    .hero h1 {
+      font-family: var(--font-circular);
+      font-weight: var(--weight-regular);
+      font-size: clamp(2.5rem, 7vw, 72px);
+      line-height: 1;
+      letter-spacing: -0.007em;
+      color: var(--color-snow);
+      margin-bottom: 24px;
+    }
+
+    /* Segunda línea en Phosphor Green */
+    .hero h1 .accent {
+      color: var(--color-phosphor-green);
+      display: block;
+    }
+
+    .hero__sub {
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: var(--tracking);
+      color: var(--color-silver-mist);
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+
+    /* Botones hero */
+    .hero__actions {
+      display: flex;
+      gap: 12px;
       justify-content: center;
-      overflow: hidden;
-      position: relative;
-      margin-bottom: var(--spacing-22);
-    }
-
-    /* Número romano / arábigo gigante en Canopee — el "producto" es la tipografía */
-    .card__numeral {
-      font-family: var(--font-canopee);
-      font-weight: 900;
-      font-size: clamp(6rem, 12vw, 11rem);
-      line-height: 0.7;
-      letter-spacing: -0.07em;
-      color: var(--color-ink-black);
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Asterisco ember de fondo */
-    .card__thumb::before {
-      content: '✻';
-      position: absolute;
-      bottom: -20%;
-      right: -10%;
-      font-size: 15rem;
-      line-height: 0.7;
-      color: var(--color-ember-orange);
-      opacity: 0.12;
-      font-family: serif;
-      z-index: 1;
-    }
-
-    /* Variante con inicial en lugar de número */
-    .card--initial .card__numeral {
-      font-size: clamp(7rem, 14vw, 13rem);
-      text-transform: uppercase;
-    }
-
-    /* Fila de título con badge NEW opcional */
-    .card__title-row {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-10);
-      margin-bottom: var(--spacing-12);
       flex-wrap: wrap;
     }
 
-    .card__title {
-      font-family: var(--font-editorial);
-      font-weight: 400;
-      font-size: 20px;
-      line-height: 1.15;
-      letter-spacing: -0.015em;
-      color: var(--color-ink-black);
+    /* ═══════════════════════════════════════════════════════════
+       🏷️ LOGO CLOUD — tira de categorías monochrome
+       ═══════════════════════════════════════════════════════════ */
+    .logo-cloud {
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--color-charcoal);
     }
 
-    /* Badge NEW — único acento cromático */
-    .badge-new {
-      display: inline-block;
-      background: var(--color-ember-orange);
-      color: var(--color-parchment);
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      padding: 3px 7px;
-      border-radius: var(--radius-tag);
+    .logo-cloud span {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: var(--weight-regular);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
+      color: var(--color-smoke);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       📋 SECTION HEADER
+       ═══════════════════════════════════════════════════════════ */
+    .section {
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section__header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section__header h2 {
+      font-family: var(--font-circular);
+      font-weight: var(--weight-regular);
+      font-size: clamp(1.75rem, 4vw, 36px);
+      line-height: 1.2;
+      letter-spacing: -0.007em;
+      color: var(--color-snow);
+      margin-bottom: 12px;
+    }
+
+    .section__header p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--color-silver-mist);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🗂️ FEATURE GRID — 3 columnas, cards con border hairline
+       Sin shadows. Superficie = canvas + border #2e2e2e.
+       ═══════════════════════════════════════════════════════════ */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* Card base — Obsidian con border Charcoal */
+    .card {
+      display: flex;
+      flex-direction: column;
+      background: var(--color-obsidian);
+      border: 1px solid var(--color-charcoal);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      transition: border-color 0.15s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card:hover {
+      border-color: var(--color-graphite);
+    }
+
+    /* Icono superior — verde fósforo, línea delgada */
+    .card__icon {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-phosphor-green);
+      font-size: 22px;
       line-height: 1;
     }
 
+    /* Título card — Snow 18px weight 500 */
+    .card__title {
+      font-family: var(--font-circular);
+      font-weight: var(--weight-medium);
+      font-size: 18px;
+      line-height: 1.38;
+      letter-spacing: var(--tracking);
+      color: var(--color-snow);
+      margin-bottom: 8px;
+    }
+
+    /* Descripción — Silver Mist 14px */
     .card__desc {
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: var(--text-body-sm);
-      line-height: 1.4;
-      letter-spacing: -0.01em;
-      color: var(--color-ink-black);
-      margin-bottom: var(--spacing-17);
+      font-size: 14px;
+      line-height: 1.5;
+      letter-spacing: var(--tracking);
+      color: var(--color-silver-mist);
+      margin-bottom: 20px;
       flex-grow: 1;
     }
 
-    /* Metadata row — byline tipo periódico */
-    .card__meta {
+    /* Zona de "ilustración" — fondo deep con line-art */
+    .card__visual {
+      background: var(--color-deep);
+      border: 1px solid var(--color-charcoal);
+      border-radius: var(--radius-input);
+      height: 100px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding-top: var(--spacing-12);
-      border-top: 1px solid var(--color-charcoal);
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: var(--text-caption);
-      letter-spacing: -0.01em;
-      color: var(--color-charcoal);
-      text-transform: uppercase;
+      align-items: center;
+      justify-content: center;
     }
 
-    .card__meta-left {
+    /* Grid de puntos decorativa — line art */
+    .card__visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--color-graphite) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-graphite) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.15;
+    }
+
+    /* Punto verde accent */
+    .card__visual::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-phosphor-green);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 6px rgba(62, 207, 142, 0.15);
+    }
+
+    /* Código mono dentro del visual */
+    .card__visual .code {
+      position: relative;
+      z-index: 2;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--color-smoke);
+      background: var(--color-obsidian);
+      padding: 3px 8px;
+      border-radius: var(--radius-input);
+      border: 1px solid var(--color-charcoal);
+    }
+
+    .card__visual .code::before {
+      content: '$ ';
+      color: var(--color-phosphor-green);
+    }
+
+    /* Fila inferior con botón pill pequeño */
+    .card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--color-charcoal);
+    }
+
+    /* Categoría como metadata mono */
+    .card__category {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-smoke);
+    }
+
+    /* Botón pill ghost dentro de card */
+    .card__cta {
       display: inline-flex;
       align-items: center;
-      gap: var(--spacing-7);
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: transparent;
+      border: 1px solid var(--color-slate);
+      color: var(--color-snow);
+      font-size: 12px;
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking);
+      transition: background-color 0.15s ease, border-color 0.15s ease;
     }
 
-    .card__meta .arrow {
-      font-family: var(--font-editorial);
-      color: var(--color-ink-black);
-    }
-
-    /* ═══════════════════════════════════════════════════════════
-       📰 TEXT LINK — editorial puro
-       ═══════════════════════════════════════════════════════════ */
-    .text-link {
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: var(--text-body-sm);
-      color: var(--color-ink-black);
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
-    }
-
-    .text-link:hover {
-      color: var(--color-pure-black);
-      text-decoration-thickness: 2px;
+    .card:hover .card__cta {
+      background: var(--color-phosphor-green);
+      border-color: var(--color-phosphor-green);
+      color: #0a0a0a;
     }
 
     /* ═══════════════════════════════════════════════════════════
-       🦶 FOOTER — two-column editorial text block
+       🎛️ DEMO / CONTACT CARD — bloque grande con border + form-look
        ═══════════════════════════════════════════════════════════ */
-    .footer {
-      border-top: 1px solid var(--color-ink-black);
-      padding: var(--spacing-43);
+    .demo {
       max-width: var(--page-max-width);
       margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .demo__inner {
+      background: var(--color-obsidian);
+      border: 1px solid var(--color-charcoal);
+      border-radius: var(--radius-card);
+      padding: 48px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: var(--spacing-43);
-      font-family: var(--font-editorial);
-      font-weight: 300;
-      font-size: var(--text-caption);
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: var(--color-charcoal);
+      gap: 48px;
+      align-items: center;
     }
 
-    .footer__col {
+    .demo__text h2 {
+      font-family: var(--font-circular);
+      font-weight: var(--weight-regular);
+      font-size: clamp(1.5rem, 3vw, 36px);
+      line-height: 1.2;
+      letter-spacing: -0.007em;
+      color: var(--color-snow);
+      margin-bottom: 16px;
+    }
+
+    .demo__text p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--color-silver-mist);
+      margin-bottom: 24px;
+    }
+
+    .demo__form {
       display: flex;
       flex-direction: column;
-      gap: var(--spacing-7);
+      gap: 12px;
     }
 
-    .footer__col--right {
-      text-align: right;
+    .demo__input {
+      background: var(--color-obsidian);
+      border: 1px solid var(--color-slate);
+      border-radius: var(--radius-input);
+      padding: 10px 14px;
+      font-family: var(--font-circular);
+      font-size: 14px;
+      letter-spacing: var(--tracking);
+      color: var(--color-snow);
+      outline: none;
+      transition: border-color 0.15s ease;
     }
 
-    .footer__col a {
-      color: var(--color-ink-black);
-      text-decoration: underline;
-      text-underline-offset: 3px;
+    .demo__input::placeholder {
+      color: var(--color-smoke);
     }
 
-    .footer__col a:hover {
-      text-decoration-thickness: 2px;
+    .demo__input:focus {
+      border-color: var(--color-phosphor-green);
+    }
+
+    .demo__form .btn--primary {
+      justify-content: center;
+      font-weight: var(--weight-medium);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🦶 FOOTER — single dark band
+       ═══════════════════════════════════════════════════════════ */
+    .footer {
+      border-top: 1px solid var(--color-charcoal);
+      padding: 40px 24px;
+      max-width: var(--page-max-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+      letter-spacing: var(--tracking);
+      color: var(--color-smoke);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer__links a {
+      color: var(--color-silver-mist);
+      transition: color 0.15s ease;
+    }
+
+    .footer__links a:hover {
+      color: var(--color-phosphor-green);
     }
 
     /* ═══════════════════════════════════════════════════════════
        📱 RESPONSIVE
        ═══════════════════════════════════════════════════════════ */
-    @media (max-width: 960px) {
-      .bio { grid-template-columns: 1fr; gap: var(--spacing-28); }
-      .section-header { grid-template-columns: 1fr; text-align: left; gap: var(--spacing-22); }
-      .section-header__center,
-      .section-header__right { text-align: left; }
-      .grid { grid-template-columns: repeat(2, 1fr); gap: var(--spacing-28); }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .nav__links { display: none; }
+      .demo__inner { grid-template-columns: 1fr; gap: 32px; }
     }
 
-    @media (max-width: 640px) {
-      .header-bar { padding: var(--spacing-14) var(--spacing-22); grid-template-columns: 1fr auto; }
-      .header-bar__location { display: none; }
-      .header-bar__brand { text-align: left; grid-column: 1; justify-self: start; }
-      .banner__inner { padding: var(--spacing-28) var(--spacing-22) var(--spacing-22); }
-      .banner__meta { flex-direction: column; gap: var(--spacing-7); align-items: flex-start; }
-      .bio,
-      .section-header,
-      .grid-section,
-      .footer { padding-left: var(--spacing-22); padding-right: var(--spacing-22); }
-      .grid { grid-template-columns: 1fr; gap: var(--spacing-28); }
-      .footer { grid-template-columns: 1fr; }
-      .footer__col--right { text-align: left; }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .nav { padding: 0 16px; }
+      .nav__right .btn--ghost { display: none; }
+      .hero { padding: 64px 16px 48px; }
+      .section { padding: 64px 16px; }
+      .logo-cloud { gap: 24px; padding: 32px 16px 64px; }
+      .demo { padding: 64px 16px; }
+      .demo__inner { padding: 24px; }
+      .footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
   <!-- ═══════════════════════════════════════════════════════════
-       📰 EDITORIAL HEADER BAR
+       🔝 TOP NAV
        ═══════════════════════════════════════════════════════════ -->
-  <header class="header-bar">
-    <div class="header-bar__location">Catálogo · 2026</div>
-    <div class="header-bar__brand">El Portafolio de Proyectos</div>
-    <div class="header-bar__menu" aria-label="Menú">
-      <span></span>
-      <span></span>
-      <span></span>
+  <nav class="nav">
+    <a href="#" class="nav__brand">
+      <span class="nav__mark" aria-hidden="true"></span>
+      <span>repos&nbsp;&amp;&nbsp;apps</span>
+    </a>
+
+    <div class="nav__links">
+      <a href="#catalogo">Productos</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#contacto">Documentación</a>
+      <a href="#contacto">Precios</a>
     </div>
-  </header>
+
+    <div class="nav__right">
+      <span class="pill-stars">
+        <span class="pill-stars__dot"></span>
+        <span>10 en vivo</span>
+      </span>
+      <a href="#contacto" class="btn btn--ghost">Iniciar sesión</a>
+      <a href="#catalogo" class="btn btn--primary">Explorar apps</a>
+    </div>
+  </nav>
 
   <!-- ═══════════════════════════════════════════════════════════
-       ⬛ DISPLAY BANNER — Masthead con Canopee oversize
+       🎭 HERO
        ═══════════════════════════════════════════════════════════ -->
-  <section class="banner">
-    <div class="banner__inner">
-      <h1 class="banner__title">Repos&nbsp;&amp;&nbsp;Apps</h1>
-      <div class="banner__sub">— un catálogo editorial de proyectos desplegados —</div>
-      <div class="banner__meta">
-        <span class="banner__meta-item"><span class="star">✻</span> Diez piezas en vivo</span>
-        <span class="banner__meta-item">Todas desplegadas en Vercel</span>
-        <span class="banner__meta-item">Actualizado 2026</span>
-      </div>
+  <section class="hero">
+    <div class="hero__pill">
+      <span class="dot"></span>
+      <span>10 proyectos desplegados · todos en vivo</span>
+      <span class="chev">›</span>
+    </div>
+
+    <h1>
+      Un catálogo oscuro
+      <span class="accent">para tus proyectos.</span>
+    </h1>
+
+    <p class="hero__sub">
+      Cada entrada es una app desplegada y funcionando. Haz clic en cualquiera
+      para abrirla en una pestaña nueva — sin fricción, sin rodeos.
+    </p>
+
+    <div class="hero__actions">
+      <a href="#catalogo" class="btn btn--primary">Ver catálogo completo</a>
+      <a href="#contacto" class="btn btn--ghost">Cómo añadir nuevas apps</a>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════
-       🎩 DROP CAP BIO BLOCK
+       🏷️ LOGO CLOUD — categorías como texto mono
        ═══════════════════════════════════════════════════════════ -->
-  <section class="bio">
-    <div class="bio__body">
-      <p>
-        Este es un catálogo de proyectos publicados: aplicaciones web, herramientas
-        y pequeños experimentos que fueron desplegados y siguen en vivo. Cada
-        entrada es una pieza terminada, y cada enlace abre en una pestaña nueva.
-      </p>
-      <p>
-        El formato sigue la tradición del broadsheet impreso: titular enorme,
-        grilla de tres columnas, y una sola nota cromática — un sello rojo —
-        para marcar lo nuevo.
-      </p>
-    </div>
-    <div>
-      <h2 class="bio__headline">
-        Un archivo<br>
-        <span class="italic">de diez</span><br>
-        proyectos.
-      </h2>
-      <div class="bio__seal">
-        <div class="stamp" aria-hidden="true"></div>
-        <div>
-          <div>Archivo</div>
-          <div style="color: var(--color-ink-black);">Vol. 01 — 2026</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       📋 SECTION HEADER — three-column intro
-       ═══════════════════════════════════════════════════════════ -->
-  <div class="section-header">
-    <div class="section-header__left">Índice · Apps 01–06</div>
-    <div class="section-header__center">
-      <h2>Todo el trabajo</h2>
-      <p class="deck">Seis entradas de la primera mitad del catálogo.</p>
-    </div>
-    <div class="section-header__right">Sección A</div>
+  <div class="logo-cloud" aria-label="Categorías">
+    <span>Juegos</span>
+    <span>Inventario</span>
+    <span>Devtools</span>
+    <span>Educación</span>
+    <span>Feedback</span>
+    <span>Catálogos</span>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════════
-       🗂️ GRID — Apps 01–06
+       📋 CATÁLOGO — Feature Grid 3 columnas
        ─────────────────────────────────────────────────────────
        📌 CÓMO AÑADIR UNA NUEVA APP (copia este bloque):
 
        <a href="TU_URL" target="_blank" rel="noopener noreferrer" class="card">
-         <div class="card__thumb">
-           <span class="card__numeral">11</span>
+         <div class="card__icon">◆</div>
+         <div class="card__visual">
+           <span class="code">tu-url.vercel.app</span>
          </div>
-         <div class="card__title-row">
-           <h3 class="card__title">Nombre de la App</h3>
-           <span class="badge-new">new</span>
-         </div>
+         <h3 class="card__title">Nombre de la App</h3>
          <p class="card__desc">Descripción breve en sentence case.</p>
-         <div class="card__meta">
-           <span class="card__meta-left">Categoría · 2026</span>
-           <span class="arrow">→</span>
+         <div class="card__footer">
+           <span class="card__category">Categoría · 2026</span>
+           <span class="card__cta">Abrir →</span>
          </div>
        </a>
 
-       📌 VARIANTES:
-         • Sin badge NEW → elimina el <span class="badge-new">new</span>
-         • Con inicial en vez de número → añade class "card--initial"
-           y usa <span class="card__numeral">A</span>
+       ─────────────────────────────────────────────────────────
+       🎨 ICONOS sugeridos (usar símbolos geométricos):
+         ◆  ●  ▲  ■  ◇  ○  △  □  ✦  ✧  *  +
        ═══════════════════════════════════════════════════════════ -->
-  <section class="grid-section">
+  <section class="section" id="catalogo">
+
+    <div class="section__header">
+      <h2>Todo el catálogo</h2>
+      <p>Diez apps desplegadas, cada una lista para abrirse en su propio tab.</p>
+    </div>
+
     <div class="grid">
 
       <!-- ─────────── 01 · JUEGO IMPOSTOR ─────────── -->
       <a href="https://juegaimpostor.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">01</span>
+        <div class="card__icon">◆</div>
+        <div class="card__visual">
+          <span class="code">juegaimpostor.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Juego Impostor</h3>
-          <span class="badge-new">new</span>
-        </div>
+        <h3 class="card__title">Juego Impostor</h3>
         <p class="card__desc">
           Deducción social para grupos. Descubre al impostor antes de que sea tarde.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Juego · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Juego</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
 
@@ -704,18 +753,17 @@
       <a href="https://inventarioperfume.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">02</span>
+        <div class="card__icon">●</div>
+        <div class="card__visual">
+          <span class="code">inventarioperfume.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Inventario Perfume</h3>
-        </div>
+        <h3 class="card__title">Inventario Perfume</h3>
         <p class="card__desc">
           Gestión y organización de tu colección de perfumes. Añade, edita y filtra.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Gestión · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Gestión</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
 
@@ -723,37 +771,35 @@
       <a href="https://qr-generator-three-inky.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">03</span>
+        <div class="card__icon">■</div>
+        <div class="card__visual">
+          <span class="code">qr-generator.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">QR Generator</h3>
-        </div>
+        <h3 class="card__title">QR Generator</h3>
         <p class="card__desc">
           Generador de códigos QR personalizados. Rápido, limpio, descargable.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Herramienta · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Herramienta</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
 
-      <!-- ─────────── 04 · GUÍA AUDITORÍA VENTAS ─────────── -->
+      <!-- ─────────── 04 · GUÍA AUDITORÍA ─────────── -->
       <a href="https://guia-auditoria-vent-set.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">04</span>
+        <div class="card__icon">▲</div>
+        <div class="card__visual">
+          <span class="code">guia-auditoria.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Guía Auditoría</h3>
-        </div>
+        <h3 class="card__title">Guía Auditoría</h3>
         <p class="card__desc">
           Guía práctica para auditar el proceso de ventas de un equipo comercial.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Guía · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Guía</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
 
@@ -761,18 +807,17 @@
       <a href="https://probador-de-c-digo.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">05</span>
+        <div class="card__icon">◇</div>
+        <div class="card__visual">
+          <span class="code">probador-de-codigo.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Probador de Código</h3>
-        </div>
+        <h3 class="card__title">Probador de Código</h3>
         <p class="card__desc">
           Entorno para probar fragmentos de código directamente en el navegador.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Dev · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Devtools</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
 
@@ -780,73 +825,35 @@
       <a href="https://registro-de-inventario-theta.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">06</span>
+        <div class="card__icon">○</div>
+        <div class="card__visual">
+          <span class="code">registro-inventario.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Registro Inventario</h3>
-        </div>
+        <h3 class="card__title">Registro Inventario</h3>
         <p class="card__desc">
           Registro y seguimiento de inventario con control de stock y entradas.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Gestión · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Gestión</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
-
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       ⬛ SEGUNDO BANNER — separador tipográfico de sección
-       ═══════════════════════════════════════════════════════════ -->
-  <section class="banner">
-    <div class="banner__inner">
-      <h2 class="banner__title">All&nbsp;Work</h2>
-      <div class="banner__meta">
-        <span class="banner__meta-item"><span class="star">✻</span> Segunda mitad</span>
-        <span class="banner__meta-item">Apps 07 — 10</span>
-        <span class="banner__meta-item">Continuación →</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       📋 SECTION HEADER — segunda mitad
-       ═══════════════════════════════════════════════════════════ -->
-  <div class="section-header">
-    <div class="section-header__left">Índice · Apps 07–10</div>
-    <div class="section-header__center">
-      <h2>La continuación</h2>
-      <p class="deck">Cuatro entradas finales del catálogo.</p>
-    </div>
-    <div class="section-header__right">Sección B</div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════
-       🗂️ GRID — Apps 07–10
-       ═══════════════════════════════════════════════════════════ -->
-  <section class="grid-section">
-    <div class="grid">
 
       <!-- ─────────── 07 · FEEDBACK CENTRAL ─────────── -->
       <a href="https://feedbackcentral.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">07</span>
+        <div class="card__icon">△</div>
+        <div class="card__visual">
+          <span class="code">feedbackcentral.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Feedback Central</h3>
-          <span class="badge-new">new</span>
-        </div>
+        <h3 class="card__title">Feedback Central</h3>
         <p class="card__desc">
           Plataforma centralizada para recibir, organizar y responder feedback de equipos.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Equipos · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Equipos</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
 
@@ -854,18 +861,17 @@
       <a href="https://aionser.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">08</span>
+        <div class="card__icon">□</div>
+        <div class="card__visual">
+          <span class="code">aionser.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Aionser</h3>
-        </div>
+        <h3 class="card__title">Aionser</h3>
         <p class="card__desc">
           Aplicación web experimental. Explora la interfaz y descubre su función.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">App · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">App</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
 
@@ -873,18 +879,17 @@
       <a href="https://clasesdeguitarra.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">09</span>
+        <div class="card__icon">✦</div>
+        <div class="card__visual">
+          <span class="code">clasesdeguitarra.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Clases de Guitarra</h3>
-        </div>
+        <h3 class="card__title">Clases de Guitarra</h3>
         <p class="card__desc">
           Recurso educativo para aprender guitarra paso a paso, con lecciones y ejercicios.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Educación · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Educación</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
 
@@ -892,18 +897,17 @@
       <a href="https://catalogotop100.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">10</span>
+        <div class="card__icon">✧</div>
+        <div class="card__visual">
+          <span class="code">catalogotop100.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Catálogo Top 100</h3>
-        </div>
+        <h3 class="card__title">Catálogo Top 100</h3>
         <p class="card__desc">
           Catálogo con las 100 entradas mejor rankeadas. Filtra, ordena y explora.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Catálogo · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Catálogo</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
 
@@ -911,19 +915,17 @@
       <a href="https://TU-URL.vercel.app/"
          target="_blank" rel="noopener noreferrer"
          class="card">
-        <div class="card__thumb">
-          <span class="card__numeral">11</span>
+        <div class="card__icon">◆</div>
+        <div class="card__visual">
+          <span class="code">tu-url.vercel.app</span>
         </div>
-        <div class="card__title-row">
-          <h3 class="card__title">Nombre de la App</h3>
-          <span class="badge-new">new</span>
-        </div>
+        <h3 class="card__title">Nombre de la App</h3>
         <p class="card__desc">
           Descripción breve en una o dos líneas, en sentence case.
         </p>
-        <div class="card__meta">
-          <span class="card__meta-left">Categoría · 2026</span>
-          <span class="arrow">→</span>
+        <div class="card__footer">
+          <span class="card__category">Categoría</span>
+          <span class="card__cta">Abrir →</span>
         </div>
       </a>
       ─────────────────────────────────────────────────────────────── -->
@@ -932,20 +934,35 @@
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════
-       🦶 FOOTER — two-column editorial block
+       🎛️ DEMO / CONTACTO
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="demo" id="contacto">
+    <div class="demo__inner">
+      <div class="demo__text">
+        <h2>¿Cómo añadir nuevas apps?</h2>
+        <p>
+          Copia el bloque de plantilla comentado dentro del HTML, cambia la URL
+          y el título. Cada tarjeta es un solo elemento <code style="font-family: var(--font-mono); color: var(--color-phosphor-green); font-size: 13px;">&lt;a&gt;</code>.
+        </p>
+      </div>
+      <form class="demo__form" onsubmit="event.preventDefault();">
+        <input class="demo__input" type="text" placeholder="Nombre de la app" />
+        <input class="demo__input" type="url" placeholder="https://tu-app.vercel.app" />
+        <button class="btn btn--primary" type="submit">Añadir al catálogo →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       🦶 FOOTER
        ═══════════════════════════════════════════════════════════ -->
   <footer class="footer">
-    <div class="footer__col">
-      <span>Mis Repos &amp; Apps · Vol. 01 — 2026</span>
-      <span>Catálogo editorial de proyectos desplegados.</span>
-    </div>
-    <div class="footer__col footer__col--right">
-      <span>
-        <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">Vercel</a> ·
-        <a href="#">Índice</a> ·
-        <a href="#">↑ Volver arriba</a>
-      </span>
-      <span style="margin-top: 6px;">Impreso en pergamino digital.</span>
+    <span>Mis Repos &amp; Apps · Catálogo 2026</span>
+    <div class="footer__links">
+      <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">Vercel</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#contacto">Añadir app</a>
+      <a href="#">↑ Arriba</a>
     </div>
   </footer>
 
